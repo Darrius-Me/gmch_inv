@@ -1,0 +1,105 @@
+<head>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'pr_list/css/bootstrap.css' %}">
+</head>
+
+
+<div class="" style="text-align: center; padding-top: 1%">
+  <h1>Hello World</h1>
+</div>
+
+<div style="background-color: gray; height: 100%" class="container table-wrapper-scroll-y my-custom-scrollbar">
+  <table class="table table-hover table-bordered mb-0" style="height: 100%">
+    <thead>
+      <tr>
+        <th scope="col">Qty</th>
+        <th scope="col">Unit</th>
+        <th scope="col">Description Item</th>
+        <th scope="col">Brand</th>
+        <th scope="col">Batch & Lot No.</th>
+        <th scope="col">Expiry Date</th>
+        <th scope="col">Unit Cost</th>
+        <th scope="col">Total Amount Cost</th>
+        <th scope="col">Remark</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for it in item %}
+
+      <tr>
+        <th scope="row">{{ it.quantity }}</th>
+        <td>{{ it.unit_id }}</td>
+        <td>{{ it.description }}</td>
+        <td>{{ it.brand }}</td>
+        <td>{{ it.batch_lot_num }}</td>
+        <td>{{ it.expiration_date }}</td>
+        <td>{{ it.unit_cost }}</td>
+        <td>{{ it.total_cost }}</td>
+      </tr>
+
+      {% endfor %}
+
+      {% for it in item %}
+
+      <tr>
+        <th scope="row">{{ it.quantity }}</th>
+        <td>{{ it.unit_id }}</td>
+        <td>{{ it.description }}</td>
+        <td>{{ it.brand }}</td>
+        <td>{{ it.batch_lot_num }}</td>
+        <td>{{ it.expiration_date }}</td>
+        <td>{{ it.unit_cost }}</td>
+        <td>{{ it.total_cost }}</td>
+      </tr>
+
+      {% endfor %}
+
+      {% for it in item %}
+
+      <tr>
+        <th scope="row">{{ it.quantity }}</th>
+        <td>{{ it.unit_id }}</td>
+        <td>{{ it.description }}</td>
+        <td>{{ it.brand }}</td>
+        <td>{{ it.batch_lot_num }}</td>
+        <td>{{ it.expiration_date }}</td>
+        <td>{{ it.unit_cost }}</td>
+        <td>{{ it.total_cost }}</td>
+      </tr>
+
+      {% endfor %}
+
+      {% for it in item %}
+
+      <tr>
+        <th scope="row">{{ it.quantity }}</th>
+        <td>{{ it.unit_id }}</td>
+        <td>{{ it.description }}</td>
+        <td>{{ it.brand }}</td>
+        <td>{{ it.batch_lot_num }}</td>
+        <td>{{ it.expiration_date }}</td>
+        <td>{{ it.unit_cost }}</td>
+        <td>{{ it.total_cost }}</td>
+      </tr>
+
+      {% endfor %}
+
+      {% for it in item %}
+
+      <tr>
+        <th scope="row">{{ it.quantity }}</th>
+        <td>{{ it.unit_id }}</td>
+        <td>{{ it.description }}</td>
+        <td>{{ it.brand }}</td>
+        <td>{{ it.batch_lot_num }}</td>
+        <td>{{ it.expiration_date }}</td>
+        <td>{{ it.unit_cost }}</td>
+        <td>{{ it.total_cost }}</td>
+      </tr>
+
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
