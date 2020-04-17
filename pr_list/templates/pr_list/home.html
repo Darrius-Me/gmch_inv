@@ -2,7 +2,7 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'pr_list/css/bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'pr_list/css/style.css' %}">
-  <link rel="stylesheet" href="{% static 'pr_list/js/style.js' %}">
+  <script src="{% static 'pr_list/js/style.js' %}"></script>
 </head>
 
 
@@ -14,81 +14,32 @@
 <div class="container table-wrapper-scroll-y my-custom-scrollbar" style="padding: 10px; border-style: solid; border-width: 1px; border-color: gray">
 
   <div class="form-group" style="width: 20%">
-      <input type="email" class="form-control" id="search_item_table" aria-describedby="emailHelp" placeholder="Search Table">
+      <input onkeyup="searchtable()" class="form-control" id="search_item_table" placeholder="Search Table">
   </div>
 
-  <table class="table table-hover table-bordered mb-0">
+  <table id="item_table" class="table table-hover table-bordered mb-0" style="text-align: center">
     <thead>
       <tr>
-        <th scope="col">Qty</th>
-        <th scope="col">Unit</th>
-        <th scope="col">Description Item</th>
-        <th scope="col">Brand</th>
-        <th scope="col">Batch & Lot No.</th>
-        <th scope="col">Expiry Date</th>
-        <th scope="col">Unit Cost</th>
-        <th scope="col">Total Cost</th>
-        <th scope="col">Remark</th>
+        <th class="th-sm">PO #</th>
+        <th scope="col">Date</th>
+        <th scope="col">Purchase Request</th>
+        <th scope="col">Charge To</th>
+        <th scope="col">Supplier</th>
+        <th scope="col">Invoice Recieve</th>
+        <th scope="col">Total Amount</th>
       </tr>
     </thead>
-    <tbody id="item_table">
+    <tbody>
 
-      {% for it in item %}
-
-      <tr>
-        <th scope="row">{{ it.quantity }}</th>
-        <td>{{ it.unit_id }}</td>
-        <td>{{ it.description }}</td>
-        <td>{{ it.brand }}</td>
-        <td>{{ it.batch_lot_num }}</td>
-        <td>{{ it.expiration_date }}</td>
-        <td>{{ it.unit_cost }}</td>
-        <td>{{ it.total_cost }}</td>
-      </tr>
-
-      {% endfor %}
-
-      {% for it in item %}
+      {% for pr in prs %}
 
       <tr>
-        <th scope="row">{{ it.quantity }}</th>
-        <td>{{ it.unit_id }}</td>
-        <td>{{ it.description }}</td>
-        <td>{{ it.brand }}</td>
-        <td>{{ it.batch_lot_num }}</td>
-        <td>{{ it.expiration_date }}</td>
-        <td>{{ it.unit_cost }}</td>
-        <td>{{ it.total_cost }}</td>
-      </tr>
-
-      {% endfor %}
-
-      {% for it in item %}
-
-      <tr>
-        <th scope="row">{{ it.quantity }}</th>
-        <td>{{ it.unit_id }}</td>
-        <td>{{ it.description }}</td>
-        <td>{{ it.brand }}</td>
-        <td>{{ it.batch_lot_num }}</td>
-        <td>{{ it.expiration_date }}</td>
-        <td>{{ it.unit_cost }}</td>
-        <td>{{ it.total_cost }}</td>
-      </tr>
-
-      {% endfor %}
-
-      {% for it in item %}
-
-      <tr>
-        <th scope="row">{{ it.quantity }}</th>
-        <td>{{ it.unit_id }}</td>
-        <td>{{ it.description }}</td>
-        <td>{{ it.brand }}</td>
-        <td>{{ it.batch_lot_num }}</td>
-        <td>{{ it.expiration_date }}</td>
-        <td>{{ it.unit_cost }}</td>
-        <td>{{ it.total_cost }}</td>
+        <td scope="row">{{ pr.po_num }}</td>
+        <td>{{ pr.date }}</td>
+        <td>{{ pr.purchase_request }}</td>
+        <td>{{ pr.charge_to }}</td>
+        <td>{{ pr.supplier }}</td>
+        <td>{{ pr.invoice_recieve }}</td>
       </tr>
 
       {% endfor %}

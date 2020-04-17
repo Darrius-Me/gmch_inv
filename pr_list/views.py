@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Item
+from .models import PurchaseOrder
 
 # Create your views here.
 def home(request):
-    supply = Item.objects.all()
-    return render(request, 'pr_list/home.html', {'item': supply})
+    order = PurchaseOrder.objects.all()
+    return render(request, 'pr_list/home.html', {'prs': order})
