@@ -1,0 +1,79 @@
+<head>
+  {% load static %}
+  <script src="{% static 'pr_list/js/style.js' %}"></script>
+  <script src="{% static 'pr_list/js/jquery.js' %}"></script>
+  <script src="{% static 'pr_list/js/bootstrap.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'pr_list/css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'pr_list/css/style.css' %}">
+</head>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <h4>GMCH INVENTORY</h4>
+
+  <div class="collapse navbar-collapse" style="margin-left: 50px">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+
+
+        <div class="dropdown">
+          <a class="btn btn-secondary" type="button" href='/po_list/{{ deps }}'>
+            Back to PO list
+          </a>
+        </div>
+
+
+      </li>
+    </ul>
+    <h5>LOGOUT</h5>
+  </div>
+</nav>
+
+<div class="container" style="padding-top: 1%; padding-bottom: 1%">
+  <h1 style="text-align: center" id="tableplaceholder">PO #: {{ po_number }}</h1>
+</div>
+<div class="container table-wrapper-scroll-y my-custom-scrollbar" style="padding: 10px; border-style: solid; border-width: 1px; border-color: gray">
+
+  <div class="form-group" style="width: 20%">
+      <input onkeyup="searchtable()" class="form-control" id="search_item_table" placeholder="Search Table">
+  </div>
+
+  <table id="item_table" class="table table-hover table-bordered mb-0" style="text-align: center">
+    <thead>
+      <tr>
+        <th class="th-sm">Quantity</th>
+        <th scope="col">Unit</th>
+        <th scope="col">Description</th>
+        <th scope="col">Brand</th>
+        <th scope="col">Batch & Lot #</th>
+        <th scope="col">Expiration Date</th>
+        <th scope="col">Unit Cost</th>
+        <th scope="col">Total Cost</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for p in prs %}
+        {% if po_number == p.po_num %}
+          {% with po_id=p.id %}
+            {% for it in item %}
+              {% if it.po_id == po_id %}
+                <tr>
+                  <td scope="row">{{ it.quantity }}</td>
+                  <td>{{ it.unit }}</td>
+                  <td>{{ it.description }}</td>
+                  <td>{{ it.brand }}</td>
+                  <td>{{ it.batch_lot_num }}</td>
+                  <td>{{ it.expiration_date }}</td>
+                  <td>{{ it.unit_cost }}</td>
+                  <td>{{ it.total_cost }}</td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          {% endwith %}
+        {% endif %}
+      {% endfor %}
+
+    </tbody>
+  </table>
+</div>
