@@ -5,4 +5,4 @@ from .models import PurchaseOrder
 # Create your views here.
 def home(request):
     order = PurchaseOrder.objects.all()
-    return render(request, 'pr_list/home.html', {'prs': order})
+    return render(request, 'all_items/home.html', {'prs': order})
