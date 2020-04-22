@@ -1,0 +1,130 @@
+<head>
+  {% load static %}
+  <script src="{% static 'po_list/js/style.js' %}"></script>
+  <script src="{% static 'po_list/js/jquery.js' %}"></script>
+  <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'po_list/css/style.css' %}">
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <h4>GMCH INVENTORY</h4>
+
+  <div class="collapse navbar-collapse" style="margin-left: 50px">
+    <div class="dropdown" style="float: right; margin-right: 10px">
+      <a class="btn" type="button" href='/po_list/All Purchase Orders'>
+        BACK
+      </a>
+    </div>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+      </li>
+    </ul>
+    <h5>LOGOUT</h5>
+  </div>
+</nav>
+
+
+<div class="" style="text-align: center; ">
+  <div class="container" style="margin-top: 10px;">
+    <h1 style="text-align: center; margin-bottom: 20px">Add PO</h1>
+    <form>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="indate">Date</label>
+          <input type="text" class="form-control" id="indate" placeholder="Date">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inpr">Purchase Request Number</label>
+          <input type="text" class="form-control" id="inpr" placeholder="PR #">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inpr">Purchase Order Number</label>
+          <input type="text" class="form-control" id="inpr" placeholder="PO #">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="insup">Supplier</label>
+          <input type="text" class="form-control" id="insup" placeholder="Company">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="incharge">Charge To</label>
+          <input type="text" class="form-control" id="incharge" placeholder="Fund">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="invoice">Invoice Number</label>
+          <input type="text" class="form-control" id="invoice" placeholder="12345">
+        </div>
+      </div>
+      <h3 style="text-align: center; margin-bottom: 20px">ITEMS</h3>
+    </form>
+  </div>
+
+  <div style="display: inline-block; width: 95%">
+    <div class="row clearfix">
+    	<div class="col-md-12 column">
+    		<table class="table table-bordered table-hover" id="addtable">
+    			<thead>
+    				<tr >
+    					<th class="text-center">
+    						Qty
+    					</th>
+    					<th class="text-center">
+    						Unit
+    					</th>
+    					<th class="text-center">
+    						Description
+    					</th>
+    					<th class="text-center">
+    						Brand Name
+    					</th>
+              <th class="text-center">
+    						Batch & Lot Number
+    					</th>
+              <th class="text-center">
+    						Expiry Date
+    					</th>
+              <th class="text-center">
+    						Unit Cost
+    					</th>
+              <th class="text-center">
+    						Remarks
+    					</th>
+    				</tr>
+    			</thead>
+    			<tbody>
+    				<tr id='addr0'>
+    					<td>
+    					<input type="text" name='name0'  placeholder='ENTER HERE' class="form-control"/>
+    					</td>
+              <td>
+    					<input type="text" name='name0'  placeholder='ENTER HERE' class="form-control"/>
+    					</td>
+              <td>
+    					<input type="text" name='name0'  placeholder='ENTER HERE' class="form-control"/>
+    					</td>
+              <td>
+    					<input type="text" name='name0'  placeholder='ENTER HERE' class="form-control"/>
+    					</td>
+              <td>
+    					<input type="text" name='name0'  placeholder='ENTER HERE' class="form-control"/>
+    					</td>
+              <td>
+    					<input type="text" name='name0'  placeholder='ENTER HERE' class="form-control"/>
+    					</td>
+              <td>
+    					<input type="text" name='name0'  placeholder='ENTER HERE' class="form-control"/>
+    					</td>
+              <td>
+    					<input type="text" name='name0'  placeholder='ENTER HERE' class="form-control"/>
+    					</td>
+    				</tr>
+    			</tbody>
+    		</table>
+    	</div>
+    </div>
+    <a id="add_row" class="btn btn-primary pull-left" onclick="addrow()" style="width:130px">Add Row</a>
+    <a id='delete_row' class="pull-right btn btn-primary" onclick="deleterow()" style="width:130px">Delete Row</a>
+  </div>
+</div>
