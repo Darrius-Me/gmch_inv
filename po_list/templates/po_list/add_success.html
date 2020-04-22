@@ -1,0 +1,44 @@
+<head>
+  {% load static %}
+  <script src="{% static 'po_list/js/style.js' %}"></script>
+  <script src="{% static 'po_list/js/jquery.js' %}"></script>
+  <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'po_list/css/style.css' %}">
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <b>GMCH INVENTORY</b>
+
+  <div class="collapse navbar-collapse" style="margin-left: 50px">
+    <div class="dropdown" style="float: right; margin-right: 10px">
+      <a class="btn" type="button" href='/po_list/All Purchase Orders'>
+        BACK
+      </a>
+    </div>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+      </li>
+    </ul>
+    <b>LOGOUT</b>
+  </div>
+</nav>
+
+<div class="" style="margin-top: 10px">
+  <div class="container">
+    <div style="text-align: center">
+      <h4>Successfully Added Purchase Order!</h4>
+    </div>
+    <div class="">
+
+      <b>Type:</b> {{ po_dets.indep }}<br>
+      <b>Date:</b> {{ po_dets.indate }}<br>
+      <b>Purchase Request Number:</b> {{ po_dets.inpr }}<br>
+      <b>Purchase Order Number:</b> {{ po_dets.inpo }}<br>
+      <b>Supplier:</b> {{ po_dets.insup }}<br>
+      <b>Funded by:</b> {{ po_dets.incharge }}<br>
+      <b>Invoice Number:</b> {{ po_dets.invoice }}<br>
+      <b>Total Cost:</b> {{ po_dets.inamount }}<br>
+    </div>
+  </div>
+</div>

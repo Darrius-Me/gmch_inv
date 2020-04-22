@@ -9,12 +9,11 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <h4>GMCH INVENTORY</h4>
+  <b>GMCH INVENTORY</b>
 
   <div class="collapse navbar-collapse" style="margin-left: 50px">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-
 
         <div class="dropdown">
           <a class="btn " type="button" href='/po_list/{{ deps }}'>
@@ -22,10 +21,9 @@
           </a>
         </div>
 
-
       </li>
     </ul>
-    <h5>LOGOUT</h5>
+    <b>LOGOUT</b>
   </div>
 </nav>
 
@@ -53,26 +51,28 @@
     </thead>
     <tbody>
 
-      {% for p in prs %}
-        {% if po_number == p.po_num %}
-          {% with po_id=p.id %}
-            {% for it in item %}
-              {% if it.po_id == po_id %}
-                <tr>
-                  <td scope="row">{{ it.quantity }}</td>
-                  <td>{{ it.unit }}</td>
-                  <td>{{ it.description }}</td>
-                  <td>{{ it.brand }}</td>
-                  <td>{{ it.batch_lot_num }}</td>
-                  <td>{{ it.expiration_date }}</td>
-                  <td>{{ it.unit_cost }}</td>
-                  <td>{{ it.total_cost }}</td>
-                </tr>
-              {% endif %}
-            {% endfor %}
-          {% endwith %}
-        {% endif %}
+      {% for it in item %}
+        <tr>
+          <td scope="row">{{ it.quantity }}</td>
+          <td>{{ it.unit }}</td>
+          <td>{{ it.description }}</td>
+          <td>{{ it.brand }}</td>
+          <td>{{ it.batch_lot_num }}</td>
+          <td>{{ it.expiration_date }}</td>
+          <td>{{ it.unit_cost }}</td>
+          <td>{{ it.total_cost }}</td>
+        </tr>
       {% endfor %}
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><b>{{ current_po.total_amount }}</b></td>
+      </tr>
 
     </tbody>
   </table>
