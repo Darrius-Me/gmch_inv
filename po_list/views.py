@@ -15,3 +15,6 @@ def po_items(request, deps, po_number='all_po'):
     it = Item.objects.all()
     order = PurchaseOrder.objects.all()
     return render(request, 'po_list/po_items.html', context={'item': it, 'prs':order , 'po_number': po_number, 'deps': deps})
+
+def add_po(request):
+    return render(request, 'po_list/add_po.html')
