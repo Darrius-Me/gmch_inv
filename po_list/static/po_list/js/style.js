@@ -26,14 +26,14 @@ function addrow()
   var cell7 = row.insertCell(6);
   var cell8 = row.insertCell(7);
 
-  cell1.innerHTML = "<td><input type='text' name='name0' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell2.innerHTML = "<td><input type='text' name='name0' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell3.innerHTML = "<td><input type='text' name='name0' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell4.innerHTML = "<td><input type='text' name='name0' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell5.innerHTML = "<td><input type='text' name='name0' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell6.innerHTML = "<td><input type='text' name='name0' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell7.innerHTML = "<td><input type='text' name='name0' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell8.innerHTML = "<td><input type='text' name='name0' placeholder='ENTER HERE' class='form-control'/></td>";
+  cell1.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"1' placeholder='ENTER HERE' class='form-control'/></td>";
+  cell2.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"2' placeholder='ENTER HERE' class='form-control'/></td>";
+  cell3.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"3' placeholder='ENTER HERE' class='form-control'/></td>";
+  cell4.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"4' placeholder='ENTER HERE' class='form-control'/></td>";
+  cell5.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"5' placeholder='ENTER HERE' class='form-control'/></td>";
+  cell6.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"6' placeholder='ENTER HERE' class='form-control'/></td>";
+  cell7.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"7' placeholder='ENTER HERE' class='form-control'/></td>";
+  cell8.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"8' placeholder='ENTER HERE' class='form-control'/></td>";
 }
 
 function deleterow()

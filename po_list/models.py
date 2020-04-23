@@ -128,13 +128,15 @@ class DjangoSession(models.Model):
 
 class Item(models.Model):
     quantity = models.IntegerField()
+    cur_qty = models.IntegerField()
     unit = models.CharField(max_length=11)
     description = models.CharField(max_length=255)
     brand = models.CharField(max_length=255)
     batch_lot_num = models.CharField(max_length=255)
     expiration_date = models.CharField(max_length=255)
-    unit_cost = models.IntegerField()
-    total_cost = models.IntegerField()
+    unit_cost = models.FloatField()
+    total_cost = models.FloatField()
+    remarks = models.CharField(max_length=255)
     po_id = models.IntegerField()
 
     class Meta:
@@ -149,7 +151,7 @@ class PurchaseOrder(models.Model):
     supplier = models.CharField(max_length=255)
     invoice_recieve = models.CharField(max_length=255)
     po_num = models.CharField(max_length=255)
-    total_amount = models.IntegerField()
+    total_amount = models.FloatField()
     department_id = models.IntegerField()
 
     class Meta:
