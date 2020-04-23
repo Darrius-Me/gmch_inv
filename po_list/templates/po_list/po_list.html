@@ -9,7 +9,7 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <b>GMCH INVENTORY</b>
+  <a href="../.." class="btn"><b>GMCH INVENTORY</b></a>
 
   <div class="collapse navbar-collapse" style="margin-left: 50px">
     <div class="dropdown" style="float: right; margin-right: 10px">
@@ -20,10 +20,9 @@
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
 
-
         <div class="dropdown">
           <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Department
+            {{ deps }}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
               <li><a class="dropdown-item" href="/po_list/All Purchase Orders">All Purchase Orders</a></li>
@@ -32,7 +31,6 @@
             {% endfor %}
           </ul>
         </div>
-
 
       </li>
     </ul>

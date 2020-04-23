@@ -4,7 +4,7 @@ from .models import PurchaseOrder, Item, Department
 
 # Create your views here.
 def home(request):
-    return render(request, 'po_list/home.html')
+    return render(request, 'po_list/po_home.html')
 
 def po_list(request, deps="All Purchase Orders"):
 
@@ -44,6 +44,30 @@ def process_add(request, deps="All Purchase Orders"):
         in_voice = request.POST.get('invoice')
 
         dep_name = Department.objects.get(id=in_dep)
+        reqs = "ssss"
+        PO = PurchaseOrder(date=in_date, purchase_request=in_pr, charge_to=in_charge, supplier=in_sup, invoice_recieve=in_voice, po_num=in_po, department_id=in_dep, total_amount="0")
+        PO.save()
+        cts = 0;
+        PO_N = PurchaseOrder.objects.get(date=in_date, purchase_request=in_pr)
+        total_am = 0
+        while 'it' + str(cts) + '1' in request.POST:
+            it_1 = request.POST.get('it' + str(cts) + '1')
+            it_2 = request.POST.get('it' + str(cts) + '2')
+            it_3 = request.POST.get('it' + str(cts) + '3')
+            it_4 = request.POST.get('it' + str(cts) + '4')
+            it_5 = request.POST.get('it' + str(cts) + '5')
+            it_6 = request.POST.get('it' + str(cts) + '6')
+            it_7 = request.POST.get('it' + str(cts) + '7')
+            it_8 = request.POST.get('it' + str(cts) + '8')
+
+            totals = float(it_1) * float(it_7)
+            total_am = total_am + totals
+            ITS = Item(quantity=it_1, cur_qty=it_1, unit=it_2, description=it_3, brand=it_4, batch_lot_num=it_5, expiration_date=it_6, unit_cost=it_7, remarks=it_8, po_id=PO_N.id, total_cost = totals)
+            ITS.save()
+            cts = cts + 1
+
+        PO_N.total_amount = total_am
+        PO_N.save()
 
         po_dets = {
             "indep" : dep_name.name,
@@ -53,33 +77,7 @@ def process_add(request, deps="All Purchase Orders"):
             "insup" : in_sup,
             "incharge" : in_charge,
             "invoice" : in_voice,
-            "inamount" : 0
+            "inamount" : total_am
         }
 
-        it_1 = request.POST.get('it01')
-        it_2 = request.POST.get('it02')
-        it_3 = request.POST.get('it03')
-        it_4 = request.POST.get('it04')
-        it_5 = request.POST.get('it05')
-        it_6 = request.POST.get('it06')
-        it_7 = request.POST.get('it07')
-        it_8 = request.POST.get('it08')
-
-        # reqs = in_dep
-        PO = PurchaseOrder(date=in_date, purchase_request=in_pr, charge_to=in_charge, supplier=in_sup, invoice_recieve=in_voice, po_num=in_po, department_id=in_dep, total_amount="0")
-        PO.save()
-
-        # canloop = False
-        #
-        # if (it_1!="" and it_2!="" and it_3!="" and it_4!="" and it_5!="" and it_6!="" and it_7!="" and it_8!="")
-        #     canloop = True
-        #
-        # while canloop
-        #
-        #
-        # if request.POST.get('it01') != "":
-        #     reqs = request.POST.get('it01')
-        # else:
-        #     reqs = "NONE"
-
-    return render(request, 'po_list/add_success.html', context={'prs': order, 'department': department, 'deps': deps, "po_dets": po_dets})
+    return render(request, 'po_list/add_success.html', context={'prs': order, 'department': department, 'deps': deps, "po_dets": po_dets, 'reqs': reqs})
