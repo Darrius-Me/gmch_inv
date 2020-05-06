@@ -9,16 +9,18 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a href="../.." class="btn"><b>GMCH INVENTORY</b></a>
+  <!-- <b>GMCH INVENTORY</b> -->
 
   <div class="collapse navbar-collapse" style="margin-left: 50px">
-    <div class="dropdown" style="float: right; margin-right: 10px">
-      <a class="btn" type="button" href='/po_list/'>
-        BACK
-      </a>
-    </div>
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
+
+        <div class="dropdown">
+          <!-- <a class="btn " type="button" href='..'> -->
+            <h4 style="color: white">.</h4>
+          <!-- </a> -->
+        </div>
+
       </li>
     </ul>
     {% if user.is_authenticated %}
@@ -34,19 +36,19 @@
 </nav>
 
 <div class="container" style="padding-top: 1%; padding-bottom: 1%">
-  <h1 style="text-align: center" id="tableplaceholder">ITEMS</h1>
+  <h1 style="text-align: center" id="tableplaceholder">GMCH INVENTORY SYSTEM</h1>
 </div>
 
 <div class="container table-wrapper-scroll-y my-custom-scrollbar" style="padding: 10px; border-style: solid; border-width: 1px; border-color: gray">
 
-<a href="./requisistion">
+<a href="../item_list">
   <div class="" style="width: 48%; background-color: gray; float:left; height: 100%; display: flex; align-items: center; justify-content: center">
-    <h3>Requisitions</h3>
+    <h3>Items</h3>
   </div>
 </a>
-<a href="./items">
+<a href="../po_list">
   <div class="" style="width: 48%; background-color: cyan; float:right; height: 100%; display: flex; align-items: center; justify-content: center">
-    <h3>All Items</h3>
+    <h3>Purchase Orders</h3>
   </div>
 </a>
 

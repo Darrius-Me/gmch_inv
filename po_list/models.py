@@ -81,6 +81,9 @@ class Department(models.Model):
         managed = False
         db_table = 'department'
 
+    def __str__(self):
+        return self.name
+
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
@@ -143,6 +146,9 @@ class Item(models.Model):
         managed = False
         db_table = 'item'
 
+    def __str__(self):
+        return self.description
+
 
 class PurchaseOrder(models.Model):
     date = models.CharField(max_length=255)
@@ -157,3 +163,6 @@ class PurchaseOrder(models.Model):
     class Meta:
         managed = False
         db_table = 'purchase_order'
+
+    def __str__(self):
+        return self.po_num
