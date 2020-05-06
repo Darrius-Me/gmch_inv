@@ -8,24 +8,6 @@
 </head>
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <!-- <b>GMCH INVENTORY</b> -->
-
-  <div class="collapse navbar-collapse" style="margin-left: 50px">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-
-        <div class="dropdown">
-          <a class="btn " type="button" href='..'>
-            &nbsp
-          </a>
-        </div>
-
-      </li>
-    </ul>
-    <b>LOGOUT</b>
-  </div>
-</nav>
 
 <div class="container" style="padding-top: 1%; padding-bottom: 1%">
   <h1 style="text-align: center" id="tableplaceholder">GMCH INVENTORY SYSTEM</h1>
@@ -33,16 +15,26 @@
 
 <div class="container table-wrapper-scroll-y my-custom-scrollbar" style="padding: 10px; border-style: solid; border-width: 1px; border-color: gray">
 
-<a href="./item_list">
-  <div class="" style="width: 48%; background-color: gray; float:left; height: 100%; display: flex; align-items: center; justify-content: center">
-    <h3>Items</h3>
+  <!-- <div style="background-color: gray; width: 48%; height: 100%; margin-left: 26%">
+    asdasdasd
+  </div> -->
+  <div class="" style="margin-left: 26%; width: 48%; background-color: white; height: 100%; align-items: center; justify-content: center; text-align: center">
+    <h3 style="padding-top: 10%">LOG IN</h3>
+    <h4>{{ error }}</h4>
+    <h4>{{ waaaw }}</h4>
+    <form action="{% url 'loginuser' %}" method="post" style="margin-top: 10%">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="exampleInputEmail1">Username</label>
+        <input class="form-control" name="username" aria-describedby="emailHelp" placeholder="Enter username">
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" name="password" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
   </div>
-</a>
-<a href="./po_list">
-  <div class="" style="width: 48%; background-color: cyan; float:right; height: 100%; display: flex; align-items: center; justify-content: center">
-    <h3>Purchase Orders</h3>
-  </div>
-</a>
 
 
 </div>

@@ -128,3 +128,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True

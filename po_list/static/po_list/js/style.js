@@ -7,10 +7,97 @@
 //     });
 //   });
 // });
+$('.datepicker').datepicker();
 
-function submit_add_po()
+function checkdate()
 {
-  alert("a");
+  var date = document.getElementById("indate");
+  var datetxt = date.value.trim().toLowerCase();
+
+  if(!datetxt.includes("/"))
+  {
+    error_fomat("Date");
+    return;
+  }
+
+  var dates = datetxt.split("/");
+
+  if(dates.length!=3)
+  {
+    error_fomat("Date");
+    return;
+  }
+
+  if((dates[0] < 0) || (dates[0] > 12))
+  {
+    error_fomat("Date");
+    return;
+  }
+
+  if(dates[2].length!=4)
+  {
+    error_fomat("Date");
+    return;
+  }
+
+  if(dates[0]==1 || dates[0]==3 || dates[0]==5 || dates[0]==7 || dates[0]==8 || dates[0]==10  || dates[0]==12)
+  {
+    if(dates[1] < 0 || dates[1] > 31)
+    {
+      error_fomat("Date");
+      return;
+    }
+  }
+  else if(dates[0]==4 || dates[0]==6 || dates[0]==9 || dates[0]==11)
+  {
+    if(dates[1] < 0 || dates[1] > 30)
+    {
+      error_fomat("Date");
+      return;
+    }
+  }
+  else if(dates[0]==2)
+  {
+    if(checkleap(dates[2]))
+    {
+      if(dates[1] < 0 || dates[1] > 29)
+      {
+        error_fomat("Date");
+        return;
+      }
+    }
+    else
+    {
+      if(dates[1] < 0 || dates[1] > 28)
+      {
+        error_fomat("Date");
+        return;
+      }
+    }
+  }
+
+}
+
+function checkleap(year)
+{
+  if (year % 4 != 0)
+    return false;
+  else if (year % 400 == 0)
+    return true;
+  else if (year % 100 == 0)
+    return false;
+  else
+    return true;
+}
+
+function error_fomat(field)
+{
+  alert("Error " + field + " Format!");
+}
+
+function validate_add()
+{
+  checkdate();
 }
 
 function addrow()
