@@ -67,10 +67,10 @@ def process_add(request, deps="All Purchase Orders"):
 
             dep_name = Department.objects.get(id=in_dep)
             reqs = "ssss"
-            # PO = PurchaseOrder(date=in_date, purchase_request=in_pr, charge_to=in_charge, supplier=in_sup, invoice_recieve=in_voice, po_num=in_po, department_id=in_dep, total_amount="0")
-            # PO.save()
+            PO = PurchaseOrder(date=in_date, purchase_request=in_pr, charge_to=in_charge, supplier=in_sup, invoice_recieve=in_voice, po_num=in_po, department_id=in_dep, total_amount="0")
+            PO.save()
             cts = 0;
-            # PO_N = PurchaseOrder.objects.get(date=in_date, purchase_request=in_pr)
+            PO_N = PurchaseOrder.objects.get(date=in_date, purchase_request=in_pr)
             total_am = 0
             while 'it' + str(cts) + '1' in request.POST:
                 it_1 = request.POST.get('it' + str(cts) + '1')
@@ -82,14 +82,14 @@ def process_add(request, deps="All Purchase Orders"):
                 it_7 = request.POST.get('it' + str(cts) + '7')
                 it_8 = request.POST.get('it' + str(cts) + '8')
 
-                # totals = float(it_1) * float(it_7)
-                # total_am = total_am + totals
-                # ITS = Item(quantity=it_1, cur_qty=it_1, unit=it_2, description=it_3, brand=it_4, batch_lot_num=it_5, expiration_date=it_6, unit_cost=it_7, remarks=it_8, po_id=PO_N.id, total_cost = totals)
-                # ITS.save()
+                totals = float(it_1) * float(it_7)
+                total_am = total_am + totals
+                ITS = Item(quantity=it_1, cur_qty=it_1, unit=it_2, description=it_3, brand=it_4, batch_lot_num=it_5, expiration_date=it_6, unit_cost=it_7, remarks=it_8, po_id=PO_N.id, total_cost = totals)
+                ITS.save()
                 cts = cts + 1
 
-            # PO_N.total_amount = total_am
-            # PO_N.save()
+            PO_N.total_amount = total_am
+            PO_N.save()
 
             po_dets = {
                 "indep" : dep_name.name,
