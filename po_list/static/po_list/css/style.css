@@ -6,3 +6,9 @@ overflow: auto;
 .table-wrapper-scroll-y {
 display: block;
 }
+
+.mainbg{
+  background-image: url('/media/home/images/LOGO_WATERMARK.png');
+  background-size: 150px;
+  background-attachment: fixed;
+}
