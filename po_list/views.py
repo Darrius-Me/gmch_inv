@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import PurchaseOrder, Item, Department
+from .models import PurchaseOrder, Item, Department, AuthUser
 
 # Create your views here.
 def po_home(request):
@@ -8,7 +8,8 @@ def po_home(request):
         return render(request, 'home/home.html')
     else:
         department = Department.objects.all()
-        return render(request, 'po_list/po_home.html', {'department': department})
+        usr = AuthUser.objects.get(username=request.user.username)
+        return render(request, 'po_list/po_home.html', {'department': department, 'usr': usr})
 
 def po_list(request, deps="All Purchase Orders"):
     if not request.user.is_authenticated:
@@ -22,7 +23,8 @@ def po_list(request, deps="All Purchase Orders"):
             temp_dep = Department.objects.get(name=deps)
             order = PurchaseOrder.objects.filter(department_id=temp_dep.id)
 
-        return render(request, 'po_list/po_list.html', context={'pos': order, 'department': department, 'deps': deps})
+        usr = AuthUser.objects.get(username=request.user.username)
+        return render(request, 'po_list/po_list.html', context={'pos': order, 'department': department, 'deps': deps, 'usr': usr})
 
 def po_items(request, deps, po_number):
     if not request.user.is_authenticated:
@@ -33,14 +35,19 @@ def po_items(request, deps, po_number):
         current_po = PurchaseOrder.objects.get(po_num=po_number)
         it = Item.objects.filter(po_id=current_po.id);
 
-        return render(request, 'po_list/po_items.html', context={'item': it, 'prs':order , 'po_number': po_number, 'deps': deps, 'current_po': current_po})
+        usr = AuthUser.objects.get(username=request.user.username)
+        return render(request, 'po_list/po_items.html', context={'item': it, 'prs':order , 'po_number': po_number, 'deps': deps, 'current_po': current_po, 'usr': usr})
 
 def add_po(request):
     if not request.user.is_authenticated:
         return render(request, 'home/home.html')
     else:
+        usr = AuthUser.objects.get(username=request.user.username)
         deps = Department.objects.all()
-        return render(request, 'po_list/add_po.html', context={'deps': deps})
+        if usr.is_admin == 1:
+            return render(request, 'po_list/add_po.html', context={'deps': deps, 'usr': usr})
+        else:
+            return render(request, 'po_list/po_home.html', {'department': deps, 'usr': usr})
 
 def process_add(request, deps="All Purchase Orders"):
     if not request.user.is_authenticated:
@@ -95,4 +102,5 @@ def process_add(request, deps="All Purchase Orders"):
                 # "inamount" : total_am
             }
 
-        return render(request, 'po_list/add_success.html', context={'prs': order, 'department': department, 'deps': deps, "po_dets": po_dets, 'reqs': reqs})
+        usr = AuthUser.objects.get(username=request.user.username)
+        return render(request, 'po_list/add_success.html', context={'prs': order, 'department': department, 'deps': deps, "po_dets": po_dets, 'reqs': reqs, 'usr': usr})

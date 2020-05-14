@@ -55,11 +55,13 @@
       <input onkeyup="searchtable()" class="form-control" id="search_item_table" placeholder="Search Table">
   </div>
 
+  {% if usr.is_admin == 1 %}
   <div class="dropdown" style="float: right">
     <a class="btn btn-primary" type="button" href='/po_list/add_po'>
       Add PO
     </a>
   </div>
+  {% endif %}
 
   <table id="item_table" class="table table-hover table-bordered mb-0" style="text-align: center">
     <thead>

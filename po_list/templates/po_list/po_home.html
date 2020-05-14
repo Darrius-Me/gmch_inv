@@ -39,12 +39,12 @@
 
 <div class="container table-wrapper-scroll-y my-custom-scrollbar" style="padding: 10px; border-style: solid; border-width: 1px; border-color: gray">
 
-<a href="./All Purchase Orders">
-  <div class="" style="margin-right: 2%; width: 32%; background-color: gray; float:left; height: 100%; display: flex; align-items: center; justify-content: center">
-    <h3>All Purchase Orders</h3>
-  </div>
-</a>
-<!-- <a href="./Pharmacy Supplies"> -->
+  <a href="./All Purchase Orders">
+    <div class="" style="margin-right: 2%; width: 32%; background-color: gray; float:left; height: 100%; display: flex; align-items: center; justify-content: center">
+      <h3>All Purchase Orders</h3>
+    </div>
+  </a>
+
   <div class="" style="margin-right: 2%; width: 32%; background-color: gray; float:left; height: 100%; justify-content: center; text-align: center;">
     <div class="">
       <h3 style="margin-top: 5%; margin-bottom: 5%">Department Supplies</h3>
@@ -66,12 +66,21 @@
     </div>
 
   </div>
-<!-- </a> -->
+
+{% if usr.is_admin == 1 %}
 <a href="./add_po">
   <div class="" style="width: 32%; background-color: gray; float:left; height: 100%; display: flex; align-items: center; justify-content: center">
     <h3>Add PO</h3>
   </div>
 </a>
+{% else %}
+  <div class="" style="width: 32%; background-color: gray; float:left; height: 100%; align-items: center; justify-content: center; text-align: center">
+    <div style="margin-top: 50%">
+      <h3>Add PO</h3>
+      <h5>(You don't have permission)</h5>
+    </div>
+  </div>
+{% endif %}
 
 
 </div>

@@ -20,7 +20,15 @@
       <li class="nav-item active">
       </li>
     </ul>
-    <b>LOGOUT</b>
+    {% if user.is_authenticated %}
+      {% if user.is_superuser %}
+        <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+      {% else %}
+        <b>Logged in as {{ user.username }} | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+      {% endif %}
+    {% else %}
+      <b>LOG IN LOGOUT</b>
+    {% endif %}
   </div>
 </nav>
 
