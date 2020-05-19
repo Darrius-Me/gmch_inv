@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import PurchaseOrder, Item, Department, AuthUser
 
@@ -11,22 +11,55 @@ def po_home(request):
         usr = AuthUser.objects.get(username=request.user.username)
         return render(request, 'po_list/po_home.html', {'department': department, 'usr': usr})
 
-def po_list(request, deps="All Purchase Orders"):
+def po_list(request, pro="All Purchase Orders", dep="All Purchase Orders", fund="All Purchase Orders"):
     if not request.user.is_authenticated:
         return render(request, 'home/home.html')
     else:
-        department = Department.objects.all()
+        departments = Department.objects.all()
 
-        if(deps == "All Purchase Orders"):
-            order = PurchaseOrder.objects.all()
+        process = "All Purchase Orders"
+        department = "All Purchase Orders"
+        funding = "All Purchase Orders"
+
+        if(dep == "All Departments"):
+            if(pro == "All Purchase Orders"):
+                if(fund == "All Funding"):
+                    order = PurchaseOrder.objects.all()
+                else:
+                    order = PurchaseOrder.objects.filter(charge_to=fund)
+            elif(pro == "Processed Orders"):
+                if(fund == "All Funding"):
+                    order = PurchaseOrder.objects.filter(is_processed=1)
+                else:
+                    order = PurchaseOrder.objects.filter(is_processed=1, charge_to=fund)
+            elif(pro == "Unprocessed Orders"):
+                if(fund == "All Funding"):
+                    order = PurchaseOrder.objects.filter(is_processed=0)
+                else:
+                    order = PurchaseOrder.objects.filter(is_processed=0, charge_to=fund)
         else:
-            temp_dep = Department.objects.get(name=deps)
-            order = PurchaseOrder.objects.filter(department_id=temp_dep.id)
+            temp_dep = Department.objects.get(name=dep)
+
+            if(pro == "All Purchase Orders"):
+                if(fund == "All Funding"):
+                    order = PurchaseOrder.objects.filter(department_id=temp_dep.id)
+                else:
+                    order = PurchaseOrder.objects.filter(department_id=temp_dep.id, charge_to=fund)
+            elif(pro == "Processed Orders"):
+                if(fund == "All Funding"):
+                    order = PurchaseOrder.objects.filter(department_id=temp_dep.id, is_processed=1)
+                else:
+                    order = PurchaseOrder.objects.filter(department_id=temp_dep.id, is_processed=1, charge_to=fund)
+            elif(pro == "Unprocessed Orders"):
+                if(fund == "All Funding"):
+                    order = PurchaseOrder.objects.filter(department_id=temp_dep.id, is_processed=0)
+                else:
+                    order = PurchaseOrder.objects.filter(department_id=temp_dep.id, is_processed=0, charge_to=fund)
 
         usr = AuthUser.objects.get(username=request.user.username)
-        return render(request, 'po_list/po_list.html', context={'pos': order, 'department': department, 'deps': deps, 'usr': usr})
+        return render(request, 'po_list/po_list.html', context={'pos': order, 'departments': departments, 'usr': usr, 'pro':pro, 'dep':dep, 'fund':fund})
 
-def po_items(request, deps, po_number):
+def po_items(request, pro, dep, fund, po_number):
     if not request.user.is_authenticated:
         return render(request, 'home/home.html')
     else:
@@ -76,7 +109,7 @@ def process_add(request, deps="All Purchase Orders"):
 
             dep_name = Department.objects.get(id=in_dep)
 
-            PO = PurchaseOrder(department_id=in_dep, charge_to=in_charge, po_num=in_po, supplier=in_sup, address=in_add, date=in_date, mode=in_mode, pr_num=in_pr, tracking_num=in_tr, delivery_place=del_place, delivery_term=del_term, delivery_date=del_date, payment_term=pay_term, total_amount=0)
+            PO = PurchaseOrder(department_id=in_dep, charge_to=in_charge, po_num=in_po, supplier=in_sup, address=in_add, date=in_date, mode=in_mode, pr_num=in_pr, tracking_num=in_tr, delivery_place=del_place, delivery_term=del_term, delivery_date=del_date, payment_term=pay_term, total_amount=0, is_processed=0)
             PO.save()
             cts = 1
             PO_N = PurchaseOrder.objects.get(date=in_date, pr_num=in_pr)
@@ -91,7 +124,7 @@ def process_add(request, deps="All Purchase Orders"):
 
                 totals = float(it_5) * float(it_4)
                 total_am = total_am + totals
-                ITS = Item(description=it_1, brand=it_2, unit=it_3, quantity=it_4, unit_cost=it_5, cur_qty=it_4, total_cost=totals, remarks="#", po_id=PO_N.id)
+                ITS = Item(description=it_1, brand=it_2, unit=it_3, quantity=it_4, unit_cost=it_5, cur_qty=it_4, total_cost=totals, remarks="#", po_id=PO_N.id, onhand_qty=0, losses=0, manufacturer="#", expiration_date="#", status=0)
                 ITS.save()
                 cts = cts + 1
 
@@ -119,3 +152,73 @@ def process_add(request, deps="All Purchase Orders"):
 
         usr = AuthUser.objects.get(username=request.user.username)
         return render(request, 'po_list/add_success.html', context={'prs': order, 'department': department, 'deps': deps, "po_dets": po_dets, 'usr': usr, 'itz': ITEMZ})
+
+
+def process_po(request, pro, dep, fund, po_number):
+    if not request.user.is_authenticated:
+        return render(request, 'home/home.html')
+    else:
+        po_dets = PurchaseOrder.objects.get(po_num=po_number)
+        department = Department.objects.get(id=po_dets.department_id)
+        it = Item.objects.filter(po_id=po_dets.id);
+
+        return render(request, 'po_list/process_po.html', context={'po_number': po_number, 'po_dets': po_dets, 'department': department.name, 'itz': it})
+
+
+def processing_po(request, pro, dep, fund, po_number):
+    if not request.user.is_authenticated:
+        return render(request, 'home/home.html')
+    else:
+        if request.method == 'POST':
+
+            cts = 1
+            all_total = 0
+
+            while 'it' + str(cts) + '1' in request.POST:
+                description = request.POST.get('it' + str(cts) + '1')
+                brand = request.POST.get('it' + str(cts) + '2')
+                manufacturer = request.POST.get('it' + str(cts) + '3')
+                lotno = request.POST.get('it' + str(cts) + '4')
+                quantity = request.POST.get('it' + str(cts) + '5')
+                onhand_qty = request.POST.get('it' + str(cts) + '6')
+                unit = request.POST.get('it' + str(cts) + '7')
+                unit_cost = request.POST.get('it' + str(cts) + '8')
+                total_cost = request.POST.get('it' + str(cts) + '9')
+                status = request.POST.get('it' + str(cts) + '10')
+                expiration_date = request.POST.get('it' + str(cts) + '11')
+                remarks = request.POST.get('it' + str(cts) + '12')
+                id = request.POST.get('it' + str(cts) + '13')
+
+                total_cost = float(quantity) * float(unit_cost)
+                all_total = all_total + total_cost
+
+                it = Item.objects.get(id=id);
+
+                it.description = description
+                it.brand = brand
+                it.manufacturer = manufacturer
+                it.batch_lot_num = lotno
+                it.quantity = quantity
+                it.onhand_qty = onhand_qty
+                it.losses = float(quantity) - float(onhand_qty)
+                it.unit = unit
+                it.unit_cost = unit_cost
+                it.total_cost = total_cost
+                it.status = status
+                it.expiration_date = expiration_date
+                it.remarks = remarks
+                it.save()
+
+                cts = cts + 1
+
+        PO_N = PurchaseOrder.objects.get(po_num=po_number)
+        PO_N.total_amount = all_total
+        PO_N.is_processed = 1
+        PO_N.save()
+
+        po_dets = PurchaseOrder.objects.get(po_num=po_number)
+        department = Department.objects.get(id=po_dets.department_id)
+        itz = Item.objects.filter(po_id=po_dets.id);
+
+        user = AuthUser.objects.get(username=request.user.username)
+        return redirect('.')

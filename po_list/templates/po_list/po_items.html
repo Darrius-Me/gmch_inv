@@ -9,20 +9,13 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a href="../../.." class="btn"><b>GMCH INVENTORY</b></a>
-
+  <a href="{% url 'startup' %}" class="btn"><b>HOME</b></a>
+  <h4>|</h4>
+  <a href=".." class="btn"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
 
-        <div class="dropdown">
-          <a class="btn " type="button" href='/po_list/{{ deps }}'>
-            BACK
-          </a>
-        </div>
+    <ul class="navbar-nav mr-auto"></ul>
 
-      </li>
-    </ul>
     {% if user.is_authenticated %}
       {% if user.is_superuser %}
         <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
@@ -45,19 +38,30 @@
         <div class="container" style="margin-top: 10px;">
           <h1 style="text-align: center; margin-bottom: 20px"></h1>
           <div class="form-row">
+            <div class="col-md-10"></div>
+            <div class="col-md-2" style="float: right; margin-bottom: 1%;">
+              {% if usr.is_admin == 1 %}
+                {% if po_dets.is_processed == 0 %}
+                  <a style="width: 100%" href="./process" class="btn btn-danger"><b>PROCESS PO</b></a>
+                {% else %}
+                  <a style="width: 100%" class="btn btn-primary disabled"><b>PO PROCESSED</b></a>
+                {% endif %}
+              {% endif %}
+            </div>
             <div class="form-group col-md-12" style="background-color: black">
               <label for="invoice">&nbsp</label>
             </div>
             <div class="form-group col-md-3">
               <label for="invoice">&nbsp</label>
             </div>
-            <div class="form-group col-md-3" style="text-align: center">
+            <div class="form-group col-md-3">
               <b>Department:</b><br>
-              {{ department_name }}
+              <!-- {{ department_name }} -->
+              <input type="text" class="form-control" value='{{ department_name }}' readonly>
             </div>
-            <div class="form-group col-md-3" style="text-align: center">
+            <div class="form-group col-md-3">
               <b>Charged To:</b><br>
-              {{ po_dets.charge_to }}
+              <input type="text" class="form-control" value='{{ po_dets.charge_to }}' readonly>
             </div>
           </div>
           <div class="form-group col-md-12" style="background-color: black">
@@ -66,35 +70,35 @@
           <div class="form-row">
             <div class="form-group col-md-5">
               <b>Purchase Order Number</b><br>
-              {{ po_dets.po_num }}
+              <input type="text" class="form-control" value='{{ po_dets.po_num }}' readonly>
             </div>
             <div class="form-group col-md-7">
               <b>Supplier</b><br>
-              {{ po_dets.supplier }}
+              <input type="text" class="form-control" value='{{ po_dets.supplier }}' readonly>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-12">
               <b>Address</b><br>
-              {{ po_dets.address }}
+              <input type="text" class="form-control" value='{{ po_dets.address }}' readonly>
             </div>
           </div>
           <div class="form-row">
             <div class="form-group col-md-3">
               <b>Date</b><br>
-              {{ po_dets.date }}
+              <input type="text" class="form-control" value='{{ po_dets.date }}' readonly>
             </div>
             <div class="form-group col-md-3">
               <b>Mode of Procurement</b><br>
-              {{ po_dets.mode }}
+              <input type="text" class="form-control" value='{{ po_dets.mode }}' readonly>
             </div>
             <div class="form-group col-md-3">
               <b>Purchase Request No.</b><br>
-              {{ po_dets.pr_num }}
+              <input type="text" class="form-control" value='{{ po_dets.pr_num }}' readonly>
             </div>
             <div class="form-group col-md-3">
               <b>Tracking Number</b><br>
-              {{ po_dets.tracking_num }}
+              <input type="text" class="form-control" value='{{ po_dets.tracking_num }}' readonly>
             </div>
           </div>
           <div class="form-group col-md-12" style="background-color: black">
@@ -103,19 +107,19 @@
           <div class="form-row">
             <div class="form-group col-md-6">
               <b>Place of Delivery</b><br>
-              {{ po_dets.delivery_place }}
+              <input type="text" class="form-control" value='{{ po_dets.delivery_place }}' readonly>
             </div>
             <div class="form-group col-md-6">
               <b>Delivery Term</b><br>
-              {{ po_dets.delivery_term }}
+              <input type="text" class="form-control" value='{{ po_dets.delivery_term }}' readonly>
             </div>
             <div class="form-group col-md-6">
               <b>Date of Delivery</b><br>
-              {{ po_dets.delivery_date }}
+              <input type="text" class="form-control" value='{{ po_dets.delivery_date }}' readonly>
             </div>
             <div class="form-group col-md-6">
               <b>Payment Term</b><br>
-              {{ po_dets.payment_term }}
+              <input type="text" class="form-control" value='{{ po_dets.payment_term }}' readonly>
             </div>
 
           </div>
@@ -147,26 +151,63 @@
                           <div class="form-group col-md-1"></div>
                           <div class="form-group col-md-6">
                             <b>Description</b><br>
-                            {{ it.description }}
+                            <input type="text" class="form-control" value='{{ it.description }}' readonly>
                           </div>
                           <div class="form-group col-md-3">
                             <b>Brand</b><br>
-                            {{ it.brand }}
+                            <input type="text" class="form-control" value='{{ it.brand }}' readonly>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-1"></div>
+                          <div class="form-group col-md-9">
+                            <b>Manufacturer</b><br>
+                            <input type="text" class="form-control" value='{{ it.manufacturer }}' readonly>
                           </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-1"></div>
                           <div class="form-group col-md-3">
+                            <b>Balance per card</b><br>
+                            <input type="text" class="form-control" value='{{ it.quantity }}' readonly>
+                          </div>
+                          <div class="form-group col-md-3">
+                            <b>On Hand</b><br>
+                            <input type="text" class="form-control" value='{{ it.onhand_qty }}' readonly>
+                          </div>
+                          <div class="form-group col-md-3">
+                            <b>Losses</b><br>
+                            <input type="text" class="form-control" value='{{ it.losses }}' readonly>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-1"></div>
+                          <div class="form-group col-md-2">
                             <b>Unit</b><br>
-                            {{ it.unit }}
+                            <input type="text" class="form-control" value='{{ it.unit }}' readonly>
                           </div>
-                          <div class="form-group col-md-3">
-                            <b>Quantity</b><br>
-                            {{ it.quantity }}
-                          </div>
-                          <div class="form-group col-md-3">
+                          <div class="form-group col-md-2">
                             <b>Unit Cost</b><br>
-                            {{ it.unit_cost }}
+                            <input type="text" class="form-control" value='{{ it.unit_cost }}' readonly>
+                          </div>
+                          <div class="form-group col-md-2">
+                            <b>Total Cost</b><br>
+                            <input type="text" class="form-control" value='{{ it.total_cost }}' readonly>
+                          </div>
+                          <div class="form-group col-md-3">
+                            <b>Status</b><br>
+                            <input type="text" class="form-control" value='{{ it.status }}' readonly>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-1"></div>
+                          <div class="form-group col-md-3">
+                            <b>Expiration</b><br>
+                            <input type="text" class="form-control" value='{{ it.expiration_date }}' readonly>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <b>Remarks</b><br>
+                            <input type="text" class="form-control" value='{{ it.remarks }}' readonly>
                           </div>
                         </div>
             					</td>

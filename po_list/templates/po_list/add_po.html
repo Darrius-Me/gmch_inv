@@ -8,18 +8,13 @@
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a href="../.." class="btn"><b>GMCH INVENTORY</b></a>
-
+  <a href="{% url 'startup' %}" class="btn"><b>HOME</b></a>
+  <h4>|</h4>
+  <a href="." class="btn"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
-    <div class="dropdown" style="float: right; margin-right: 10px">
-      <a class="btn" type="button" href='/po_list/'>
-        BACK
-      </a>
-    </div>
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-      </li>
-    </ul>
+
+    <ul class="navbar-nav mr-auto"></ul>
+
     {% if user.is_authenticated %}
       {% if user.is_superuser %}
         <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>

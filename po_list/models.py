@@ -139,6 +139,10 @@ class Item(models.Model):
     total_cost = models.FloatField()
     remarks = models.CharField(max_length=255)
     po_id = models.IntegerField()
+    manufacturer = models.CharField(max_length=255)
+    onhand_qty = models.IntegerField()
+    losses = models.IntegerField()
+    status = models.IntegerField()
 
     class Meta:
         managed = False
@@ -160,6 +164,7 @@ class PurchaseOrder(models.Model):
     delivery_date = models.CharField(max_length=255)
     payment_term = models.CharField(max_length=255)
     total_amount = models.IntegerField()
+    is_processed = models.IntegerField()
 
     class Meta:
         managed = False

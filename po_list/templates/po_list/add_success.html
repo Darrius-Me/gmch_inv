@@ -8,18 +8,13 @@
 </head>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <b>GMCH INVENTORY</b>
-
+  <a href="../.." class="btn"><b>HOME</b></a>
+  <h4>|</h4>
+  <a href="." class="btn"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
-    <div class="dropdown" style="float: right; margin-right: 10px">
-      <a class="btn" type="button" href='/po_list/All Purchase Orders'>
-        BACK
-      </a>
-    </div>
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-      </li>
-    </ul>
+
+    <ul class="navbar-nav mr-auto"></ul>
+
     {% if user.is_authenticated %}
       {% if user.is_superuser %}
         <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
@@ -60,11 +55,11 @@
             <label for="invoice">&nbsp</label>
           </div>
           <div class="form-row">
-            <div class="form-group col-md-5">
+            <div class="form-group col-md-6">
               <b>Purchase Order Number</b><br>
               {{ po_dets.inpo }}
             </div>
-            <div class="form-group col-md-7">
+            <div class="form-group col-md-6">
               <b>Supplier</b><br>
               {{ po_dets.insup }}
             </div>
@@ -124,7 +119,7 @@
           	<div class="col-md-12 column">
                 <table class="table table-bordered table-hover">
             			<thead>
-            				<tr >
+            				<tr>
             					<th class="text-center" style="width: 5%">
             						#
             					</th>
@@ -137,7 +132,7 @@
                     {% for it in itz %}
             				<tr id='addr0'>
             					<td id='addtable'>
-                        <b>1</b>
+                        <b>{{ forloop.counter }}</b>
             					</td>
                       <td>
                         <div class="form-row">

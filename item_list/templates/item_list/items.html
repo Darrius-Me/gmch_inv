@@ -9,18 +9,13 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a href="../.." class="btn"><b>GMCH INVENTORY</b></a>
-
+  <a href="../.." class="btn"><b>HOME</b></a>
+  <h4>|</h4>
+  <a href=".." class="btn"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
-    <div class="dropdown" style="float: right; margin-right: 10px">
-      <a class="btn" type="button" href='/item_list/'>
-        BACK
-      </a>
-    </div>
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-      </li>
-    </ul>
+
+    <ul class="navbar-nav mr-auto"></ul>
+
     {% if user.is_authenticated %}
       {% if user.is_superuser %}
         <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
@@ -36,44 +31,44 @@
 <div class="" style="padding-top: 1%; padding-bottom: 1%">
   <h1 style="text-align: center" id="tableplaceholder">AVAILABLE ITEMS</h1>
 </div>
-<div class=" table-wrapper-scroll-y my-custom-scrollbar" style="padding: 10px; border-style: solid; border-width: 1px; border-color: gray">
+<div class=" table-wrapper-scroll-y my-custom-scrollbar" style="padding: 10px; border-style: solid; border-width: 1px; border-color: gray; overflow-x: auto">
 
   <div class="form-group" style="width: 20%">
       <input onkeyup="searchtable()" class="form-control" id="search_item_table" placeholder="Search Table">
   </div>
 
-  <table id="item_table" class="table table-hover table-bordered mb-0" style="text-align: center">
+  <table id="item_table" class="table table-hover table-bordered mb-0" style="text-align: center; table-layout: fixed">
     <thead>
       <tr>
-        <th class="th-sm">Starting Quantity</th>
-        <th class="th-sm">PO #</th>
-        <th class="th-sm">Current Quantity</th>
-        <th scope="col">Unit</th>
-        <th scope="col">Description</th>
-        <th scope="col">Brand</th>
-        <th scope="col">Batch & Lot #</th>
-        <th scope="col">Expiration Date</th>
-        <th scope="col">Unit Cost</th>
+        <th class="th-sm" style="width: 300px">Product</th>
+        <th class="th-sm" style="width: 120px">Unit</th>
+        <th class="th-sm" style="width: 500px">Manufacturer</th>
+        <th class="th-sm" style="width: 150px">Lot No.</th>
+        <th class="th-sm" style="width: 100px">Expiration</th>
+        <th class="th-sm" style="width: 100px">Quantity</th>
+        <th class="th-sm" style="width: 100px">On Hand</th>
+        <th class="th-sm" style="width: 100px">Losses</th>
+        <th class="th-sm" style="width: 150px">Brand</th>
+        <th class="th-sm" style="width: 100px">Unit Cost</th>
+        <th class="th-sm" style="width: 150px">Total Amount</th>
+        <th class="th-sm" style="width: 500px">Remarks</th>
       </tr>
     </thead>
     <tbody>
       {% for it in items %}
         <tr>
-          <td><b>{{ it.quantity }}</b></td>
-          <td><b>
-            {% for po in pos %}
-              {% if it.po_id == po.id %}
-                {{ po.po_num }}
-              {% endif %}
-            {% endfor %}
-          </b></td>
-          <td><b>{{ it.cur_qty }}</b></td>
-          <td>{{ it.unit }}</td>
-          <td>{{ it.description }}</td>
-          <td>{{ it.brand }}</td>
-          <td>{{ it.batch_lot_num }}</td>
-          <td>{{ it.expiration_date }}</td>
-          <td>{{ it.unit_cost }}</td>
+          <td id="showtable2" style="text-align: left"><b>{{ it.description }}</b></td>
+          <td id="showtable2">{{ it.unit }}</td>
+          <td id="showtable2">{{ it.manufacturer }}</td>
+          <td id="showtable2">{{ it.batch_lot_num }}</td>
+          <td id="showtable2">{{ it.expiration_date }}</td>
+          <td id="showtable2">{{ it.quantity }}</td>
+          <td id="showtable2">{{ it.onhand_qty }}</td>
+          <td id="showtable2">{{ it.losses }}</td>
+          <td id="showtable2">{{ it.brand }}</td>
+          <td id="showtable2">{{ it.unit_cost }}</td>
+          <td id="showtable2">{{ it.total_amount }}</td>
+          <td id="showtable2">{{ it.remarks }}</td>
         </tr>
       {% endfor %}
     </tbody>
