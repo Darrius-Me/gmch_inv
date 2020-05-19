@@ -106,15 +106,9 @@ function addrow()
   var row = table.insertRow(table.rows.length);
   var cell1 = row.insertCell(0);
   var cell2 = row.insertCell(1);
-  var cell3 = row.insertCell(2);
-  var cell4 = row.insertCell(3);
-  var cell5 = row.insertCell(4);
 
-  cell1.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"1' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell2.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"2' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell3.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"3' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell4.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"4' placeholder='ENTER HERE' class='form-control'/></td>";
-  cell5.innerHTML = "<td><input type='text' name='it" + (table.rows.length - 2) +"5' placeholder='ENTER HERE' class='form-control'/></td>";
+  cell1.innerHTML = "<td id='addtable'><b>" + (table.rows.length -1) + "</b></td>";
+  cell2.innerHTML = "<td><div class='form-row'><div class='form-group col-md-1'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "3'>Unit</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "3' placeholder='#'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "4'>Quantity</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "4' placeholder='#'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "5'>Unit Cost</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "5' placeholder='#'></div></div><div class='form-row'><div class='form-group col-md-1'></div><div class='form-group col-md-6'><label for='it" + (table.rows.length - 1) + "1'>Description</label><input type='text' class='form-control' name='it" + (table.rows.length - 1) + "1' placeholder='#'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "2'>Brand</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "2' placeholder='#'></div></div></td>";
 }
 
 function deleterow()

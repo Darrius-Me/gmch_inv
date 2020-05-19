@@ -12,3 +12,13 @@ display: block;
   background-size: 150px;
   background-attachment: fixed;
 }
+
+#addtable{
+  text-align: center;
+  /* vertical-align: middle; */
+}
+
+#showtable{
+  text-align: center;
+  vertical-align: middle;
+}

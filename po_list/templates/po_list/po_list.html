@@ -67,12 +67,10 @@
     <thead>
       <tr>
         <th class="th-sm">PO #</th>
-        <th scope="col">Date</th>
-        <th scope="col">Purchase Request</th>
         <th scope="col">Charge To</th>
         <th scope="col">Supplier</th>
-        <th scope="col">Invoice Recieve</th>
-        <th scope="col">Total Amount</th>
+        <th scope="col">Date</th>
+        <th scope="col">Purchase Request No.</th>
       </tr>
     </thead>
     <tbody>
@@ -80,12 +78,10 @@
       {% for po in pos %}
         <tr>
           <td scope="row"><a href="./{{ po.po_num }}"><b>{{ po.po_num }}</b></a></td>
-          <td>{{ po.date }}</td>
-          <td>{{ po.purchase_request }}</td>
           <td>{{ po.charge_to }}</td>
           <td>{{ po.supplier }}</td>
-          <td>{{ po.invoice_recieve }}</td>
-          <td>{{ po.total_amount }}</td>
+          <td>{{ po.date }}</td>
+          <td>{{ po.pr_num }}</td>
         </tr>
       {% endfor %}
 

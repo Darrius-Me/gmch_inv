@@ -20,7 +20,7 @@ def startup(request):
 def loginuser(request):
     user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
     if user is None:
-        return render(request, 'home/home.html', context={'error': 'User not found!'})
+        return render(request, 'home/home.html', context={'error': 'User credentials error!'})
     else:
         login(request, user)
         return redirect('startup')

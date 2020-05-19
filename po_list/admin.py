@@ -13,9 +13,9 @@ class AccountAdmin(UserAdmin):
     fieldsets = ()
 
 class PurchaseOrderAdmin(admin.ModelAdmin):
-    list_display = ('po_num', 'charge_to', 'supplier', 'purchase_request')
-    search_fields = ('po_num', 'charge_to', 'supplier', 'purchase_request')
-    readonly_fields = ('po_num', 'charge_to', 'supplier', 'purchase_request')
+    list_display = ('po_num', 'charge_to', 'supplier', 'pr_num')
+    search_fields = ('po_num', 'charge_to', 'supplier', 'pr_num')
+    readonly_fields = ('po_num', 'charge_to', 'supplier', 'pr_num')
 
     filter_horizontal = ()
     list_filter = ()
