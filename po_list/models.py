@@ -54,9 +54,6 @@ class AuthUser(models.Model):
         managed = False
         db_table = 'auth_user'
 
-    def __str__(self):
-        return self.username
-
 
 class AuthUserGroups(models.Model):
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
@@ -84,9 +81,6 @@ class Department(models.Model):
     class Meta:
         managed = False
         db_table = 'department'
-
-    def __str__(self):
-        return self.name
 
 
 class DjangoAdminLog(models.Model):
@@ -150,23 +144,23 @@ class Item(models.Model):
         managed = False
         db_table = 'item'
 
-    def __str__(self):
-        return self.description
-
 
 class PurchaseOrder(models.Model):
-    date = models.CharField(max_length=255)
-    purchase_request = models.IntegerField()
-    charge_to = models.CharField(max_length=255)
-    supplier = models.CharField(max_length=255)
-    invoice_recieve = models.CharField(max_length=255)
-    po_num = models.CharField(max_length=255)
-    total_amount = models.FloatField()
     department_id = models.IntegerField()
+    charge_to = models.CharField(max_length=30)
+    po_num = models.CharField(max_length=255)
+    supplier = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
+    date = models.CharField(max_length=255)
+    mode = models.CharField(max_length=255)
+    pr_num = models.CharField(max_length=255)
+    tracking_num = models.CharField(max_length=255)
+    delivery_place = models.CharField(max_length=255)
+    delivery_term = models.CharField(max_length=255)
+    delivery_date = models.CharField(max_length=255)
+    payment_term = models.CharField(max_length=255)
+    total_amount = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'purchase_order'
-
-    def __str__(self):
-        return self.po_num
