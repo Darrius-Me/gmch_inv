@@ -1,0 +1,257 @@
+<head>
+  {% load static %}
+  <script src="{% static 'po_list/js/style.js' %}"></script>
+  <script src="{% static 'po_list/js/jquery.js' %}"></script>
+  <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
+  <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'po_list/css/style.css' %}">
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a href="{% url 'startup' %}" class="btn"><b>HOME</b></a>
+  <h4>|</h4>
+  <a href="." class="btn"><b>BACK</b></a>
+  <div class="collapse navbar-collapse" style="margin-left: 50px">
+
+    <ul class="navbar-nav mr-auto"></ul>
+
+    {% if user.is_authenticated %}
+      {% if user.is_superuser %}
+        <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+      {% else %}
+        <b>Logged in as {{ user.username }} | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+      {% endif %}
+    {% else %}
+      <b>LOG IN LOGOUT</b>
+    {% endif %}
+  </div>
+</nav>
+
+<div class="" style="margin-top: 10px;">
+  <form action="./processing_po" method="post" autocomplete="off">
+  {% csrf_token %}
+  <div class="" style="margin: 0 auto; border: solid; border-width: 1px; width: 97%; height: 79%; padding-bottom: 10px; overflow-y: scroll;">
+      <div class="container" style="margin-top: 10px;">
+        <h1 style="text-align: center; margin-bottom: 20px">PROCESS PO: [{{ po_number }}]</h1>
+        <div class="form-row">
+          <div class="form-group col-md-12" style="background-color: black">
+            <label for="invoice">&nbsp</label>
+          </div>
+          <div class="form-group col-md-3">
+            <label for="invoice">&nbsp</label>
+          </div>
+          <div class="form-group col-md-3">
+            <b>Department:</b><br>
+            <input type="text" class="form-control" value='{{ department }}' readonly>
+          </div>
+          <div class="form-group col-md-3">
+            <b>Charged To:</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.charge_to }}' readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-12" style="background-color: black">
+          <label for="invoice">&nbsp</label>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-1">&nbsp</div>
+          <div class="form-group col-md-4">
+            <b>Purchase Order Number</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.po_num }}' readonly>
+          </div>
+          <div class="form-group col-md-1">&nbsp</div>
+          <div class="form-group col-md-4">
+            <b>Supplier</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.supplier }}' readonly>
+          </div>
+          <div class="form-group col-md-2">
+            &nbsp
+          </div>
+          <div class="form-group col-md-1">
+            &nbsp
+          </div>
+          <div class="form-group col-md-9">
+            <b>Address</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.address }}' readonly>
+          </div>
+          <div class="form-group col-md-2">
+            &nbsp
+          </div>
+          <div class="form-group col-md-1">&nbsp</div>
+          <div class="form-group col-md-2">
+            <b>Date</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.date }}' readonly>
+          </div>
+          <div class="form-group col-md-2">
+            <b>Mode of Procurement</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.mode }}' readonly>
+          </div>
+          <div class="form-group col-md-1">&nbsp</div>
+          <div class="form-group col-md-2">
+            <b>Purchase Request No.</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.pr_num }}' readonly>
+          </div>
+          <!-- <div class="form-group col-md-1">&nbsp</div> -->
+          <div class="form-group col-md-2">
+            <b>Tracking Number</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.tracking_num }}' readonly>
+          </div>
+        </div>
+        <div class="form-group col-md-12" style="background-color: black">
+          <label for="invoice">&nbsp</label>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-1">&nbsp</div>
+          <div class="form-group col-md-5">
+            <b>Place of Delivery</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.delivery_place }}' readonly>
+          </div>
+          <div class="form-group col-md-5">
+            <b>Delivery Term</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.delivery_term }}' readonly>
+          </div>
+          <div class="form-group col-md-1">&nbsp</div>
+          <div class="form-group col-md-1">&nbsp</div>
+          <div class="form-group col-md-5">
+            <b>Date of Delivery</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.delivery_date }}' readonly>
+          </div>
+          <div class="form-group col-md-5">
+            <b>Payment Term</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.payment_term }}' readonly>
+          </div>
+
+        </div>
+        <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
+        <h3 style="text-align: center; margin-bottom: 20px">ITEMS</h3>
+      </div>
+
+      <div style="margin: 0 auto; text-align: center; width: 97%;">
+        <div class="row clearfix">
+        	<div class="col-md-12 column">
+              <table class="table table-bordered table-hover" >
+          			<thead>
+          				<tr >
+          					<th class="text-center" style="width: 5%; border: 2px solid blue">
+          						#
+          					</th>
+          					<th class="text-center" style="border: 2px solid blue">
+          						Item
+          					</th>
+          				</tr>
+          			</thead>
+          			<tbody>
+                  {% for it in itz %}
+            				<tr id='addr0'>
+            					<td id='showtable' style="border: 2px solid blue">
+                        <b>{{ forloop.counter }}</b>
+            					</td>
+                      <td style="border: 2px solid blue">
+                        <div class="form-row">
+                          <div class="form-group col-md-1"></div>
+                          <div class="form-group col-md-6">
+                            <b>Description</b><br>
+                            <input type="text" class="form-control" name='it{{ forloop.counter }}1' value='{{ it.description }}' style="font-weight: bold; color: blue" readonly>
+                          </div>
+                          <div class="form-group col-md-3">
+                            <b>Brand</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}2" value='{{ it.brand }}' readonly>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-1"></div>
+                          <div class="form-group col-md-6">
+                            <b>Manufacturer</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}3" value='{{ it.manufacturer }}'>
+                          </div>
+                          <div class="form-group col-md-3">
+                            <b>Lot Number</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}4" value='{{ it.batch_lot_num }}'>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-1"></div>
+                          <div class="form-group col-md-3">
+                            <b>Balance per card</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}5" value='{{ it.quantity }}' readonly>
+                          </div>
+                          <div class="form-group col-md-3">
+                            <b>On Hand</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}6" value='{{ it.onhand_qty }}'>
+                          </div>
+                          <div class="form-group col-md-3">
+                            <b>Losses</b><br>
+                            <i>Automated</i>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-1"></div>
+                          <div class="form-group col-md-2">
+                            <b>Unit</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}7" value='{{ it.unit }}' readonly>
+                          </div>
+                          <div class="form-group col-md-2">
+                            <b>Unit Cost</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}8" value='{{ it.unit_cost }}' readonly>
+                          </div>
+                          <div class="form-group col-md-2">
+                            <b>Total Cost</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}9" value='{{ it.total_cost }}' readonly>
+                          </div>
+                          <div class="form-group col-md-3">
+                            <b>Status</b><br>
+                            <select class="form-control" name="it{{ forloop.counter }}10" style="font-weight: bold">
+                              <option value="0" style="font-weight: bold; color: red">Not delivered</option>
+                              <option value="1" style="font-weight: bold; color: orange">Lacking</option>
+                              <option value="2" style="font-weight: bold; ">Returned</option>
+                              <option value="3" style="font-weight: bold; color: green">Received</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-1"></div>
+                          <div class="form-group col-md-2">
+                            <b>Expiration</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}11" value='{{ it.expiration_date }}'>
+                          </div>
+                          <div class="form-group col-md-7">
+                            <b>Remarks</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}12" value='{{ it.remarks }}'>
+                            <input type="hidden" class="form-control" name="it{{ forloop.counter }}13" value='|{{ it.id }}|'>
+                          </div>
+                        </div>
+            					</td>
+            				</tr>
+                  {% endfor %}
+          			</tbody>
+          		</table>
+        	</div>
+        </div>
+      </div>
+    </div>
+    <div class="" style="margin: 0 auto; padding-top: 10px; text-align: center">
+      <button type="button" class="btn btn-primary" onclick="validate_add()" data-toggle="modal" data-target="#exampleModal">SUBMIT</button>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="col-md-12" style="text-align: center; color: red">
+              <h4 class="modal-title" id="exampleModalLabel"><b>WARNING!</b></h4>
+            </div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="text-align: center">
+            <b>This process cannot be undone. <br>Please double check your entry. <br>Continue?</b>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-danger">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

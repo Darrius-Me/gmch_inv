@@ -9,20 +9,11 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <!-- <b>GMCH INVENTORY</b> -->
-
+  <a href="../.." class="btn"><b>&nbsp</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
 
-        <div class="dropdown">
-          <!-- <a class="btn " type="button" href='..'> -->
-            <h4 style="color: white">.</h4>
-          <!-- </a> -->
-        </div>
+    <ul class="navbar-nav mr-auto"></ul>
 
-      </li>
-    </ul>
     {% if user.is_authenticated %}
       {% if user.is_superuser %}
         <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>

@@ -9,18 +9,13 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a href=".." class="btn"><b>GMCH INVENTORY</b></a>
-
+  <a href="{% url 'startup' %}" class="btn"><b>HOME</b></a>
+  <h4>|</h4>
+  <a href=".." class="btn"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-          <div class="dropdown">
-          <a class="btn " type="button" href='../startup'>
-            BACK
-          </a>
-        </div>
-      </li>
-    </ul>
+
+    <ul class="navbar-nav mr-auto"></ul>
+
     {% if user.is_authenticated %}
       {% if user.is_superuser %}
         <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
@@ -46,23 +41,25 @@
         <h3 style="color: black">ADD PO</h3>
       </div>
     </a>
-    <a href="./add_po">
+    <a href="./Unprocessed Orders-All Departments-All Funding">
       <div style="background-color: #ffb1b0; height: 50%; width: 100%; display: flex; justify-content: center; align-items: center">
-        <h3 style="color: black">Process PO</h3>
+        <h3 style="color: black">UNPROCESSED PO</h3>
       </div>
     </a>
     {% else %}
     <div style="background-color: #ff5a59; height: 50%; width: 100%; display: flex; text-align: center; justify-content: center; align-items: center">
       <h3 style="color: black">ADD PO <br>(Not authorized)</h3>
     </div>
-    <div style="background-color: #ffb1b0; height: 50%; width: 100%; display: flex; text-align: center; justify-content: center; align-items: center">
-      <h3 style="color: black">Process PO <br>(Not authorized)</h3>
-    </div>
+    <a href="./Unprocessed Orders-All Departments-All Funding">
+      <div style="background-color: #ffb1b0; height: 50%; width: 100%; display: flex; justify-content: center; align-items: center">
+        <h3 style="color: black">UNPROCESSED PO</h3>
+      </div>
+    </a>
     {% endif %}
   </div>
   <div style="background-color: gray; margin-right: 2%; width: 32%; height: 100%">
     <div style="height: 50%; width: 100%">
-      <a href="./All Purchase Orders">
+      <a href="./All Purchase Orders-All Departments-All Funding">
         <div style="background-color: #b8c4f4; height: 100%; width: 100%; display: flex; align-items: center; justify-content: center">
           <h3 style="color: black">All Purchase Orders</h3>
         </div>
@@ -78,7 +75,7 @@
           {% for dep in department %}
           <tr>
             <th scope="col" style="border-top: 1px solid #1e3fc3; border-bottom: 1px solid #1e3fc3">
-              <a href="./{{ dep.name }}">
+              <a href="./All Purchase Orders-{{ dep.name }}-All Funding">
                 <div style="color: black">
                   {{ dep.name }}
                 </div>
@@ -92,58 +89,15 @@
   </div>
 
   <div style="width: 32%; height: 100%">
-    <div style="background-color: #b2fd84; height: 50%; width: 100%; display: flex; text-align: center, justify-content: center; align-items: center">
-      <h3>General Fund PO</h3>
-    </div>
-    <div style="background-color: #deff77; height: 50%; width: 100%; display: flex; text-align: center, justify-content: center; align-items: center">
-      <h3>Trust Fund PO</h3>
-    </div>
-  </div>
-
-<!--
-  <a href="./All Purchase Orders">
-    <div class="" style="margin-right: 2%; width: 32%; background-color: gray; float:left; height: 100%; display: flex; align-items: center; justify-content: center">
-      <h3>All Purchase Orders</h3>
-    </div>
-  </a>
-
-  <div class="" style="margin-right: 2%; width: 32%; background-color: gray; float:left; height: 100%; justify-content: center; text-align: center;">
-    <div class="container" style="border-bottom: 1px solid black">
-      <div>
-        <h3>Department Supplies</h3>
+    <a href="./All Purchase Orders-All Departments-General Fund">
+      <div style="color: black; background-color: #b2fd84; height: 50%; width: 100%; display: flex; text-align: center; justify-content: center; align-items: center">
+        <h3>General Fund PO</h3>
       </div>
-      <div style="border: solid; border-width: 1px; background-color: yellow; height: 45%; width: 90%; margin-bottom: 2%; margin-left: 5%; overflow-y: auto;">
-        <table class="table" style="text-align: center">
-          {% for dep in department %}
-          <tr>
-            <th scope="col" style="border-bottom: solid; border-width: 1px">
-              <a href="./{{ dep.name }}">
-                <div>
-                  {{ dep.name }}
-                </div>
-              </a>
-            </th>
-          </tr>
-          {% endfor %}
-        </table>
+    </a>
+    <a href="./All Purchase Orders-All Departments-Trust Fund">
+      <div style="color: black; background-color: #deff77; height: 50%; width: 100%; display: flex; text-align: center; justify-content: center; align-items: center">
+        <h3>Trust Fund PO</h3>
       </div>
-    </div>
+    </a>
   </div>
-
-{% if usr.is_admin == 1 %}
-<a href="./add_po">
-  <div class="" style="width: 32%; background-color: gray; float:left; height: 100%; display: flex; align-items: center; justify-content: center">
-    <h3>Add PO</h3>
-  </div>
-</a>
-{% else %}
-  <div class="" style="width: 32%; background-color: gray; float:left; height: 100%; align-items: center; justify-content: center; text-align: center">
-    <div style="margin-top: 50%">
-      <h3>Add PO</h3>
-      <h5>(You don't have permission)</h5>
-    </div>
-  </div>
-{% endif %} -->
-
-
 </div>

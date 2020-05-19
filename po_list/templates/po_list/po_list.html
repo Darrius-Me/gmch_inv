@@ -1,7 +1,7 @@
 <head>
   {% load static %}
-  <script src="{% static 'po_list/js/style.js' %}"></script>
   <script src="{% static 'po_list/js/jquery.js' %}"></script>
+  <script src="{% static 'po_list/js/style.js' %}"></script>
   <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
   <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'po_list/css/style.css' %}">
@@ -9,31 +9,57 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a href="../.." class="btn"><b>GMCH INVENTORY</b></a>
-
+  <a href="{% url 'startup' %}" class="btn"><b>HOME</b></a>
+  <h4>|</h4>
+  <a href=".." class="btn"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
-    <div class="dropdown" style="float: right; margin-right: 10px">
-      <a class="btn" type="button" href='/po_list'>
-        BACK
-      </a>
-    </div>
+
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-
         <div class="dropdown">
           <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ deps }}
+            {{ pro }}
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" href="/po_list/All Purchase Orders">All Purchase Orders</a></li>
-            {% for dep in department %}
-              <li><a class="dropdown-item" href="/po_list/{{dep.name}}">{{ dep.name }}</a></li>
-            {% endfor %}
-          </ul>
+          <div>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href='/po_list/All Purchase Orders-{{ dep }}-{{ fund }}'>All Purchase Orders</a></li>
+                <li><a class="dropdown-item" href='/po_list/Processed Orders-{{ dep }}-{{ fund }}'>Processed Orders</a></li>
+                <li><a class="dropdown-item" href='/po_list/Unprocessed Orders-{{ dep }}-{{ fund }}'>Unprocessed Orders</a></li>
+            </ul>
+          </div>
         </div>
-
+      </li>
+      <li class="nav-item active">
+        <div class="dropdown">
+          <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ dep }}
+          </button>
+          <div>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="/po_list/{{ pro }}-All Departments-{{ fund }}">All Departments</a></li>
+              {% for dep in departments %}
+                <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep.name }}-{{ fund }}">{{ dep.name }}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item active">
+        <div class="dropdown">
+          <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ fund }}
+          </button>
+          <div>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep }}-All Funding">All Funding</a></li>
+                <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep }}-General Fund">General Fund</a></li>
+                <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep }}-Trust Fund">Trust Fund</a></li>
+            </ul>
+          </div>
+        </div>
       </li>
     </ul>
+
     {% if user.is_authenticated %}
       {% if user.is_superuser %}
         <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
@@ -46,8 +72,14 @@
   </div>
 </nav>
 
-<div class="container" style="padding-top: 1%; padding-bottom: 1%">
-  <h1 style="text-align: center" id="tableplaceholder">{{ deps }}</h1>
+<div class="container" style="padding-top: 1%; padding-bottom: 1%; text-transform: uppercase">
+  <h3 style="text-align: center" id="tableplaceholder">
+    <u style="color: #019519">{{ pro }}</u>
+    from
+    <u style="color: #019519">{{ dep }}</u>
+    in
+    <u style="color: #019519">{{ fund }}</u>
+  </h3>
 </div>
 <div class="table-wrapper-scroll-y my-custom-scrollbar" style="padding: 10px; border-style: solid; border-width: 1px; border-color: gray">
 
@@ -71,9 +103,10 @@
         <th scope="col">Supplier</th>
         <th scope="col">Date</th>
         <th scope="col">Purchase Request No.</th>
+        <th scope="col">Status</th>
       </tr>
     </thead>
-    <tbody>
+  <tbody>
 
       {% for po in pos %}
         <tr>
@@ -82,6 +115,11 @@
           <td>{{ po.supplier }}</td>
           <td>{{ po.date }}</td>
           <td>{{ po.pr_num }}</td>
+          {% if po.is_processed == 1 %}
+            <td style="color: green"><b>Processed</b></td>
+          {% else %}
+            <td style="color: red"><b>Unprocessed</b></td>
+          {% endif %}
         </tr>
       {% endfor %}
 
