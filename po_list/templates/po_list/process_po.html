@@ -1,7 +1,8 @@
 <head>
   {% load static %}
   <script src="{% static 'po_list/js/style.js' %}"></script>
-  <script src="{% static 'po_list/js/jquery.js' %}"></script>
+  <!-- <script src="{% static 'po_list/js/jquery.js' %}"></script> -->
+  <script src="{% static 'po_list/js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
   <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'po_list/css/style.css' %}">
@@ -10,7 +11,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a href="{% url 'startup' %}" class="btn"><b>HOME</b></a>
   <h4>|</h4>
-  <a href="." class="btn"><b>BACK</b></a>
+  <a href="." class="btn" style="color: red"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
 
     <ul class="navbar-nav mr-auto"></ul>
@@ -122,10 +123,17 @@
 
         </div>
         <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
-        <h3 style="text-align: center; margin-bottom: 20px">ITEMS</h3>
       </div>
 
-      <div style="margin: 0 auto; text-align: center; width: 97%;">
+      <div class="col-md-12" style="margin-bottom: 10px">
+        <div class="form-row">
+          <div class="col-md-5">&nbsp</div>
+          <div class="col-md-2">
+            <a class="btn btn-primary" href="#process_po_id" data-toggle="collapse" style="width: 100%">Toggle Items</a>
+          </div>
+        </div>
+      </div>
+      <div id="process_po_id" class="collapse" style="margin: 0 auto; text-align: center; width: 97%;">
         <div class="row clearfix">
         	<div class="col-md-12 column">
               <table class="table table-bordered table-hover" >
@@ -150,73 +158,86 @@
                           <div class="form-group col-md-1"></div>
                           <div class="form-group col-md-6">
                             <b>Description</b><br>
-                            <input type="text" class="form-control" name='it{{ forloop.counter }}1' value='{{ it.description }}' style="font-weight: bold; color: blue" readonly>
+                            <input type="hidden" class="form-control" name="it{{ forloop.counter }}-0" value='{{ it.id }}'>
+                            <input type="text" class="form-control" name='it{{ forloop.counter }}-1' value='{{ it.description }}' style="font-weight: bold; color: blue" readonly>
                           </div>
                           <div class="form-group col-md-3">
                             <b>Brand</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}2" value='{{ it.brand }}' readonly>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-2" value='{{ it.brand }}' readonly>
                           </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-1"></div>
                           <div class="form-group col-md-6">
                             <b>Manufacturer</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}3" value='{{ it.manufacturer }}'>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-3" value='{{ it.manufacturer }}'>
                           </div>
                           <div class="form-group col-md-3">
                             <b>Lot Number</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}4" value='{{ it.batch_lot_num }}'>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-4" value='{{ it.batch_lot_num }}'>
                           </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-1"></div>
                           <div class="form-group col-md-3">
                             <b>Balance per card</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}5" value='{{ it.quantity }}' readonly>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-5" value='{{ it.quantity }}' readonly>
                           </div>
                           <div class="form-group col-md-3">
                             <b>On Hand</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}6" value='{{ it.onhand_qty }}'>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-6" value='{{ it.onhand_qty }}'>
                           </div>
                           <div class="form-group col-md-3">
                             <b>Losses</b><br>
-                            <i>Automated</i>
+                            <h4><i>Automated</i></h4>
                           </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-1"></div>
                           <div class="form-group col-md-2">
                             <b>Unit</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}7" value='{{ it.unit }}' readonly>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-7" value='{{ it.unit }}' readonly>
                           </div>
                           <div class="form-group col-md-2">
                             <b>Unit Cost</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}8" value='{{ it.unit_cost }}' readonly>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-8" value='{{ it.unit_cost }}' readonly>
                           </div>
                           <div class="form-group col-md-2">
                             <b>Total Cost</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}9" value='{{ it.total_cost }}' readonly>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-9" value='{{ it.total_cost }}' readonly>
                           </div>
                           <div class="form-group col-md-3">
-                            <b>Status</b><br>
-                            <select class="form-control" name="it{{ forloop.counter }}10" style="font-weight: bold">
-                              <option value="0" style="font-weight: bold; color: red">Not delivered</option>
-                              <option value="1" style="font-weight: bold; color: orange">Lacking</option>
-                              <option value="2" style="font-weight: bold; ">Returned</option>
-                              <option value="3" style="font-weight: bold; color: green">Received</option>
-                            </select>
+                            <b>Expiration</b><br>
+                            <input type="date" class="form-control" name="it{{ forloop.counter }}-10" value='{{ it.expiration_date }}'>
                           </div>
                         </div>
                         <div class="form-row">
                           <div class="form-group col-md-1"></div>
-                          <div class="form-group col-md-2">
-                            <b>Expiration</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}11" value='{{ it.expiration_date }}'>
-                          </div>
-                          <div class="form-group col-md-7">
+                          <div class="form-group col-md-9">
                             <b>Remarks</b><br>
-                            <input type="text" class="form-control" name="it{{ forloop.counter }}12" value='{{ it.remarks }}'>
-                            <input type="hidden" class="form-control" name="it{{ forloop.counter }}13" value='|{{ it.id }}|'>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-11" value='{{ it.remarks }}'>
+                          </div>
+                        </div>
+                        <div class="form-row">
+                          <div class="form-group col-md-1"></div>
+                          <div class="form-group col-md-3">
+                            <b>Status</b><br>
+                            <select class="form-control" name="it{{ forloop.counter }}-12" style="font-weight: bold">
+                              <option value="0" style="font-weight: bold; color: red">Not delivered</option>
+                              <option value="1" style="font-weight: bold; color: orange">Lacking</option>
+                              <option value="2" style="font-weight: bold; ">Returned</option>
+                              <option value="3" style="font-weight: bold; color: green">Received</option>
+                              <option value="3" style="font-weight: bold; color: blue">asd</option>
+                            </select>
+                          </div>
+                          <div class="form-group col-md-3" id='datetimepicker4' >
+                            <b>Delivery Date</b><br>
+                            <input type="date" class="form-control" name="it{{ forloop.counter }}-13" value='{{ it.delivery_date }}'>
+                            <!-- <input type='text' class="form-control" id='datetimepicker4' -->
+                          </div>
+                          <div class="form-group col-md-3">
+                            <b>Invoice Number</b><br>
+                            <input type="text" class="form-control" name="it{{ forloop.counter }}-14" value='{{ it.invoice_number }}'>
                           </div>
                         </div>
             					</td>

@@ -95,6 +95,14 @@ function error_fomat(field)
   // alert("Error " + field + " Format!");
 }
 
+$(function(){
+    $('.date_picker input').datepicker({
+       format: "dd.mm.yyyy",
+       todayBtn: "linked",
+       language: "de"
+    });
+});
+
 function validate_add()
 {
   checkdate();

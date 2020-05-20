@@ -75,6 +75,15 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class Delivery(models.Model):
+    date = models.IntegerField()
+    invoice = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'delivery'
+
+
 class Department(models.Model):
     name = models.CharField(max_length=255)
 
