@@ -1,7 +1,7 @@
 <head>
   {% load static %}
   <script src="{% static 'po_list/js/jquery.js' %}"></script>
-  <script src="{% static 'po_list/js/style.js' %}"></script>
+  <script src="{% static 'po_list/js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
   <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'po_list/css/style.css' %}">
@@ -11,7 +11,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a href="{% url 'startup' %}" class="btn"><b>HOME</b></a>
   <h4>|</h4>
-  <a href=".." class="btn"><b>BACK</b></a>
+  <a href=".." class="btn" style="color: red"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
 
     <ul class="navbar-nav mr-auto">
@@ -22,9 +22,9 @@
           </button>
           <div>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href='/po_list/All Purchase Orders-{{ dep }}-{{ fund }}'>All Purchase Orders</a></li>
-                <li><a class="dropdown-item" href='/po_list/Processed Orders-{{ dep }}-{{ fund }}'>Processed Orders</a></li>
-                <li><a class="dropdown-item" href='/po_list/Unprocessed Orders-{{ dep }}-{{ fund }}'>Unprocessed Orders</a></li>
+              <li><a class="dropdown-item" href='/po_list/All Purchase Orders-{{ dep }}-{{ fund }}'>All Purchase Orders</a></li>
+              <li><a class="dropdown-item" href='/po_list/Processed Orders-{{ dep }}-{{ fund }}'>Processed Orders</a></li>
+              <li><a class="dropdown-item" href='/po_list/Unprocessed Orders-{{ dep }}-{{ fund }}'>Unprocessed Orders</a></li>
             </ul>
           </div>
         </div>
@@ -116,9 +116,9 @@
           <td>{{ po.date }}</td>
           <td>{{ po.pr_num }}</td>
           {% if po.is_processed == 1 %}
-            <td style="color: green"><b>Processed</b></td>
+            <td style="color: green"><b>Complete</b></td>
           {% else %}
-            <td style="color: red"><b>Unprocessed</b></td>
+            <td style="color: red"><b>Incomplete</b></td>
           {% endif %}
         </tr>
       {% endfor %}

@@ -173,21 +173,24 @@ def processing_po(request, pro, dep, fund, po_number):
 
             cts = 1
             all_total = 0
+            allid=""
 
-            while 'it' + str(cts) + '1' in request.POST:
-                description = request.POST.get('it' + str(cts) + '1')
-                brand = request.POST.get('it' + str(cts) + '2')
-                manufacturer = request.POST.get('it' + str(cts) + '3')
-                lotno = request.POST.get('it' + str(cts) + '4')
-                quantity = request.POST.get('it' + str(cts) + '5')
-                onhand_qty = request.POST.get('it' + str(cts) + '6')
-                unit = request.POST.get('it' + str(cts) + '7')
-                unit_cost = request.POST.get('it' + str(cts) + '8')
-                total_cost = request.POST.get('it' + str(cts) + '9')
-                status = request.POST.get('it' + str(cts) + '10')
-                expiration_date = request.POST.get('it' + str(cts) + '11')
-                remarks = request.POST.get('it' + str(cts) + '12')
-                id = request.POST.get('it' + str(cts) + '13')
+            while 'it' + str(cts) + '-1' in request.POST:
+                description = request.POST.get('it' + str(cts) + '-1')
+                brand = request.POST.get('it' + str(cts) + '-2')
+                manufacturer = request.POST.get('it' + str(cts) + '-3')
+                lotno = request.POST.get('it' + str(cts) + '-4')
+                quantity = request.POST.get('it' + str(cts) + '-5')
+                onhand_qty = request.POST.get('it' + str(cts) + '-6')
+                unit = request.POST.get('it' + str(cts) + '-7')
+                unit_cost = request.POST.get('it' + str(cts) + '-8')
+                total_cost = request.POST.get('it' + str(cts) + '-9')
+                expiration_date = request.POST.get('it' + str(cts) + '-10')
+                remarks = request.POST.get('it' + str(cts) + '-11')
+                status = request.POST.get('it' + str(cts) + '-12')
+                delivery_date = request.POST.get('it' + str(cts) + '-13')
+                invoice_number = request.POST.get('it' + str(cts) + '-14')
+                id = request.POST.get('it' + str(cts) + '-0')
 
                 total_cost = float(quantity) * float(unit_cost)
                 all_total = all_total + total_cost
@@ -204,21 +207,25 @@ def processing_po(request, pro, dep, fund, po_number):
                 it.unit = unit
                 it.unit_cost = unit_cost
                 it.total_cost = total_cost
-                it.status = status
                 it.expiration_date = expiration_date
                 it.remarks = remarks
-                it.save()
+                it.status = status
+                it.delivery_date = delivery_date
+                it.invoice_number = invoice_number
 
+                it.save()
+                allid = allid + "-" + str(id)
                 cts = cts + 1
 
         PO_N = PurchaseOrder.objects.get(po_num=po_number)
         PO_N.total_amount = all_total
-        PO_N.is_processed = 1
+        # PO_N.is_processed = 1
         PO_N.save()
 
         po_dets = PurchaseOrder.objects.get(po_num=po_number)
         department = Department.objects.get(id=po_dets.department_id)
         itz = Item.objects.filter(po_id=po_dets.id);
 
-        user = AuthUser.objects.get(username=request.user.username)
+        usr = AuthUser.objects.get(username=request.user.username)
         return redirect('.')
+        # return render(request, 'po_list/po_items.html', context={'usr': usr, 'po_dets': po_dets, 'itz': itz, 'department_name': department.name, 'allid': allid})

@@ -1,17 +1,17 @@
 <head>
   {% load static %}
-  <script src="{% static 'po_list/js/style.js' %}"></script>
-  <script src="{% static 'po_list/js/jquery.js' %}"></script>
-  <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
   <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
+  <script src="{% static 'po_list/js/jquery-1.11.0.min.js' %}"></script>
+  <!-- <script src="//code.jquery.com/jquery-1.11.0.min.js"></script> -->
+  <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
+  <script src="{% static 'po_list/js/style.js' %}"></script>
   <link rel="stylesheet" href="{% static 'po_list/css/style.css' %}">
 </head>
-
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a href="{% url 'startup' %}" class="btn"><b>HOME</b></a>
   <h4>|</h4>
-  <a href=".." class="btn"><b>BACK</b></a>
+  <a href=".." class="btn" style="color: red"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
 
     <ul class="navbar-nav mr-auto"></ul>
@@ -44,7 +44,7 @@
                 {% if po_dets.is_processed == 0 %}
                   <a style="width: 100%" href="./process" class="btn btn-danger"><b>PROCESS PO</b></a>
                 {% else %}
-                  <a style="width: 100%" class="btn btn-primary disabled"><b>PO PROCESSED</b></a>
+                  <a style="width: 100%" class="btn btn-primary disabled"><b>PO COMPLETE</b></a>
                 {% endif %}
               {% endif %}
             </div>
@@ -117,105 +117,132 @@
               <b>Date of Delivery</b><br>
               <input type="text" class="form-control" value='{{ po_dets.delivery_date }}' readonly>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-3">
+              <b>Date Received</b><br>
+              <input type="text" class="form-control" value='' readonly>
+            </div>
+            <div class="form-group col-md-3">
               <b>Payment Term</b><br>
               <input type="text" class="form-control" value='{{ po_dets.payment_term }}' readonly>
             </div>
-
           </div>
           <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
-        </div>
-
-        <div style="margin: 0 auto; width: 97%;">
-          <div class="row clearfix">
-          	<div class="col-md-12 column">
-                <table class="table table-bordered table-hover">
-            			<thead>
-            				<tr >
-            					<th class="text-center" style="width: 5%">
-            						#
-            					</th>
-            					<th class="text-center">
-            						Item
-            					</th>
-            				</tr>
-            			</thead>
-            			<tbody>
-                    {% for it in itz %}
-            				<tr id='addr0'>
-            					<td id='showtable'>
-                        <b>{{ forloop.counter }}</b>
-            					</td>
-                      <td>
-                        <div class="form-row">
-                          <div class="form-group col-md-1"></div>
-                          <div class="form-group col-md-6">
-                            <b>Description</b><br>
-                            <input type="text" class="form-control" value='{{ it.description }}' readonly>
+          <div class="form-group col-md-12">
+            <div class="form-row">
+              <div class="form-group col-md-5">&nbsp</div>
+              <div class="form-group col-md-2">
+                <button class="btn btn-primary" data-toggle="collapse" data-target="#po_items_id" style="width: 100%">Toggle Items</button>
+              </div>
+            </div>
+          </div>
+          <div class="collapse" id="po_items_id" style="margin: 0 auto; width: 97%;">
+            <div class="row clearfix">
+            	<div class="col-md-12 column">
+                  <table class="table table-bordered table-hover">
+              			<thead>
+              				<tr >
+              					<th class="text-center" style="width: 5%">
+              						#
+              					</th>
+              					<th class="text-center">
+              						Item
+              					</th>
+              				</tr>
+              			</thead>
+              			<tbody>
+                      {% for it in itz %}
+              				<tr id='addr0'>
+              					<td id='showtable'>
+                          <b>{{ forloop.counter }}</b>
+              					</td>
+                        <td>
+                          <div class="form-row">
+                            <div class="form-group col-md-1"></div>
+                            <div class="form-group col-md-6">
+                              <b>Description</b><br>
+                              <input type="text" class="form-control" value='{{ it.description }}' readonly style="font-weight: bold">
+                            </div>
+                            <div class="form-group col-md-3">
+                              <b>Brand</b><br>
+                              <input type="text" class="form-control" value='{{ it.brand }}' readonly>
+                            </div>
                           </div>
-                          <div class="form-group col-md-3">
-                            <b>Brand</b><br>
-                            <input type="text" class="form-control" value='{{ it.brand }}' readonly>
+                          <div class="form-row">
+                            <div class="form-group col-md-1"></div>
+                            <div class="form-group col-md-6">
+                              <b>Manufacturer</b><br>
+                              <input type="text" class="form-control" value='{{ it.manufacturer }}' readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                              <b>Lot No.</b><br>
+                              <input type="text" class="form-control" value='{{ it.batch_lot_num }}' readonly>
+                            </div>
                           </div>
-                        </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-1"></div>
-                          <div class="form-group col-md-9">
-                            <b>Manufacturer</b><br>
-                            <input type="text" class="form-control" value='{{ it.manufacturer }}' readonly>
+                          <div class="form-row">
+                            <div class="form-group col-md-1"></div>
+                            <div class="form-group col-md-3">
+                              <b>Balance per card</b><br>
+                              <input type="text" class="form-control" value='{{ it.quantity }}' readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                              <b>On Hand</b><br>
+                              <input type="text" class="form-control" value='{{ it.onhand_qty }}' readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                              <b>Losses</b><br>
+                              <input type="text" class="form-control" value='{{ it.losses }}' readonly>
+                            </div>
                           </div>
-                        </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-1"></div>
-                          <div class="form-group col-md-3">
-                            <b>Balance per card</b><br>
-                            <input type="text" class="form-control" value='{{ it.quantity }}' readonly>
+                          <div class="form-row">
+                            <div class="form-group col-md-1"></div>
+                            <div class="form-group col-md-2">
+                              <b>Unit</b><br>
+                              <input type="text" class="form-control" value='{{ it.unit }}' readonly>
+                            </div>
+                            <div class="form-group col-md-2">
+                              <b>Unit Cost</b><br>
+                              <input type="text" class="form-control" value='{{ it.unit_cost }}' readonly>
+                            </div>
+                            <div class="form-group col-md-2">
+                              <b>Total Cost</b><br>
+                              <input type="text" class="form-control" value='{{ it.total_cost }}' readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                              <b>Status</b><br>
+                              {% if it.status == 0 %}
+                                <input type="text" class="form-control" value='NOT DELIVERED' readonly style="color: red; font-weight: bold">
+                              {% elif it.status == 1 %}
+                                <input type="text" class="form-control" value='LACKING' readonly style="color: orange; font-weight: bold">
+                              {% elif it.status == 2 %}
+                                <input type="text" class="form-control" value='RETURNED' readonly style="font-weight: bold">
+                              {% elif it.status == 3 %}
+                                <input type="text" class="form-control" value='DELIVERED' readonly style="color: green; font-weight: bold">
+                              {% endif %}
+                            </div>
                           </div>
-                          <div class="form-group col-md-3">
-                            <b>On Hand</b><br>
-                            <input type="text" class="form-control" value='{{ it.onhand_qty }}' readonly>
+                          <div class="form-row">
+                            <div class="form-group col-md-1"></div>
+                            <div class="form-group col-md-9">
+                              <b>Remarks</b><br>
+                              <input type="text" class="form-control" value='{{ it.remarks }}' readonly>
+                            </div>
                           </div>
-                          <div class="form-group col-md-3">
-                            <b>Losses</b><br>
-                            <input type="text" class="form-control" value='{{ it.losses }}' readonly>
-                          </div>
-                        </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-1"></div>
-                          <div class="form-group col-md-2">
-                            <b>Unit</b><br>
-                            <input type="text" class="form-control" value='{{ it.unit }}' readonly>
-                          </div>
-                          <div class="form-group col-md-2">
-                            <b>Unit Cost</b><br>
-                            <input type="text" class="form-control" value='{{ it.unit_cost }}' readonly>
-                          </div>
-                          <div class="form-group col-md-2">
-                            <b>Total Cost</b><br>
-                            <input type="text" class="form-control" value='{{ it.total_cost }}' readonly>
-                          </div>
-                          <div class="form-group col-md-3">
-                            <b>Status</b><br>
-                            <input type="text" class="form-control" value='{{ it.status }}' readonly>
-                          </div>
-                        </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-1"></div>
-                          <div class="form-group col-md-3">
-                            <b>Expiration</b><br>
-                            <input type="text" class="form-control" value='{{ it.expiration_date }}' readonly>
-                          </div>
-                          <div class="form-group col-md-6">
-                            <b>Remarks</b><br>
-                            <input type="text" class="form-control" value='{{ it.remarks }}' readonly>
-                          </div>
-                        </div>
-            					</td>
-            				</tr>
-                    {% endfor %}
-            			</tbody>
-            		</table>
-          	</div>
+              					</td>
+              				</tr>
+                      {% endfor %}
+              			</tbody>
+              		</table>
+            	</div>
+            </div>
+          </div>
+          <!-- <div class="form-group col-md-12" style="background-color: black">&nbsp</div> -->
+          <div class="form-group col-md-12">
+            <div class="form-row">
+              <div class="form-group col-md-5">&nbsp</div>
+              <div class="form-group col-md-2">
+                <button class="btn btn-primary" data-toggle="collapse" data-target="#demo" style="width: 100%">Toggle Deliveries</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
