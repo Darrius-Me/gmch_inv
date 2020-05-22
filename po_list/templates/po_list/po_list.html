@@ -18,42 +18,21 @@
       <li class="nav-item active">
         <div class="dropdown">
           <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ pro }}
+            FILTER
           </button>
           <div>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" href='/po_list/All Purchase Orders-{{ dep }}-{{ fund }}'>All Purchase Orders</a></li>
-              <li><a class="dropdown-item" href='/po_list/Processed Orders-{{ dep }}-{{ fund }}'>Processed Orders</a></li>
-              <li><a class="dropdown-item" href='/po_list/Unprocessed Orders-{{ dep }}-{{ fund }}'>Unprocessed Orders</a></li>
-            </ul>
-          </div>
-        </div>
-      </li>
-      <li class="nav-item active">
-        <div class="dropdown">
-          <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ dep }}
-          </button>
-          <div>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="/po_list/{{ pro }}-All Departments-{{ fund }}">All Departments</a></li>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="border: 2px solid blue">
+              <li style="border-bottom: 1px solid black"><a class="dropdown-item" href='/po_list/All Purchase Orders-All Departments-All Funding'>ALL PURCHASE ORDERS</a></li>
+              <li><a class="dropdown-item" href='/po_list/All Purchase Orders-{{ dep }}-{{ fund }}'>All PO</a></li>
+              <li><a class="dropdown-item" href='/po_list/Completed Orders-{{ dep }}-{{ fund }}'>Completed Orders</a></li>
+              <li style="border-bottom: 1px solid black"><a class="dropdown-item" href='/po_list/Incomplete Orders-{{ dep }}-{{ fund }}'>Incomplete Orders</a></li>
+              <li><a class="dropdown-item" href="/po_list/{{ pro }}-All Departments-{{ fund }}">All Departments</a></li>
               {% for dep in departments %}
                 <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep.name }}-{{ fund }}">{{ dep.name }}</a></li>
               {% endfor %}
-            </ul>
-          </div>
-        </div>
-      </li>
-      <li class="nav-item active">
-        <div class="dropdown">
-          <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{ fund }}
-          </button>
-          <div>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep }}-All Funding">All Funding</a></li>
-                <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep }}-General Fund">General Fund</a></li>
-                <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep }}-Trust Fund">Trust Fund</a></li>
+              <li style="border-top: 1px solid black"><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep }}-All Funding">All Funding</a></li>
+              <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep }}-General Fund">General Fund</a></li>
+              <li><a class="dropdown-item" href="/po_list/{{ pro }}-{{ dep }}-Trust Fund">Trust Fund</a></li>
             </ul>
           </div>
         </div>
