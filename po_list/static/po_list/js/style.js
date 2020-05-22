@@ -7,7 +7,7 @@
 //     });
 //   });
 // });
-$('.datepicker').datepicker();
+
 
 function checkdate()
 {
@@ -95,14 +95,6 @@ function error_fomat(field)
   // alert("Error " + field + " Format!");
 }
 
-$(function(){
-    $('.date_picker input').datepicker({
-       format: "dd.mm.yyyy",
-       todayBtn: "linked",
-       language: "de"
-    });
-});
-
 function validate_add()
 {
   checkdate();
@@ -128,6 +120,84 @@ function deleterow()
   }
 }
 
+function additem_process()
+{
+  // alert("added items");
+  var desc = document.getElementById("adddelivery_description");
+  var description = desc.options[desc.selectedIndex].text;
+
+  var quantity = document.getElementById("adddelivery_quantity").value;
+  var manufacturer = document.getElementById("adddelivery_manufacturer").value;
+  var brand = document.getElementById("adddelivery_brand").value;
+  var lotno = document.getElementById("adddelivery_lotno").value;
+  var expiration_date = document.getElementById("adddelivery_expiration").value;
+  var remarks = document.getElementById("adddelivery_remarks").value;
+
+  var prevtable = document.getElementById("delivery_table");
+  var prevtable_length = prevtable.rows.length;
+
+ if(prevtable_length == 0)
+ {
+   var id = "1";
+ }
+ else
+ {
+   var previd = prevtable.rows[prevtable_length-1].cells[0].id;
+   var id = parseInt(previd) + 1;
+ }
+
+  var table = document.getElementById("delivery_table");
+  var row = table.insertRow(table.rows.length);
+  var cell1 = row.insertCell(0);
+  var cell2 = row.insertCell(1);
+  cell1.id = id;
+
+  cell1.innerHTML = '<td><b>' + table.rows.length + "</b></td>";
+  // cell2.innerHTML = '<td><div class="container" style="text-align: left;"><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-6"><b>Product</b><br><input type="text" class="form-control" id="add_del_desc" value="' + description +'"readonly></div><div class="form-group col-md-3"><b>Quantity</b><br><input type="text" class="form-control" id="add_del_quantity" value="' + quantity + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Manufacturer</b><br><input type="text" class="form-control" id="add_del_manufacturer" value="' + manufacturer + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-3"><b>Brand</b><br><input type="text" class="form-control" id="add_del_brand" value="' + brand + '" readonly></div><div class="form-group col-md-3"><b>Lot Number</b><br><input type="text" class="form-control" id="add_del_lotno" value="' + lotno + '" readonly></div><div class="form-group col-md-3"><b>Expiration Date</b><br><input type="text" class="form-control" id="add_del_expiration" value="' + expiration_date + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Remarks</b><br><input type="text" class="form-control" id="add_del_remarks" value="' + remarks + '" readonly></div><div class="form-group col-md-2"><b>&nbsp</b><a class="pull-right btn btn-danger" onclick="deleteitem_process(' + id + ')" style="width:100%; color: white">Delete Item</a></div></div></td>';
+  cell2.innerHTML = '<td><div class="container" style="text-align: left;"><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-6"><b>Product</b><br><input type="text" class="form-control" id="add_del_desc" name="del_date-' + table.rows.length + '" value="' + description +'"readonly></div><div class="form-group col-md-3"><b>Quantity</b><br><input type="text" class="form-control" id="add_del_quantity" value="' + quantity + '" name="del_quantity-' + table.rows.length + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Manufacturer</b><br><input type="text" class="form-control" id="add_del_manufacturer" value="' + manufacturer + '" name="del_manufacturer-' + table.rows.length + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-3"><b>Brand</b><br><input type="text" class="form-control" id="add_del_brand" value="' + brand + '" name="del_brand-' + table.rows.length + '" readonly></div><div class="form-group col-md-3"><b>Lot Number</b><br><input type="text" class="form-control" id="add_del_lotno" value="' + lotno + '" name="del_lotno-' + table.rows.length + '" readonly></div><div class="form-group col-md-3"><b>Expiration Date</b><br><input type="text" class="form-control" id="add_del_expiration" value="' + expiration_date + '" name="del_expiration_date-' + table.rows.length + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Remarks</b><br><input type="text" class="form-control" id="add_del_remarks" value="' + remarks + '" name="del_remarks-' + table.rows.length + '" readonly></div><div class="form-group col-md-2"><b>&nbsp</b><a class="pull-right btn btn-danger" onclick="deleteitem_process(' + id + ')" style="width:100%; color: white">Delete Item</a></div></div></td>';
+
+  document.getElementById("adddelivery_quantity").value = "";
+  document.getElementById("adddelivery_manufacturer").value = "";
+  document.getElementById("adddelivery_brand").value = "";
+  document.getElementById("adddelivery_lotno").value = "";
+  document.getElementById("adddelivery_expiration").value = "";
+  document.getElementById("adddelivery_remarks").value = "";
+
+}
+
+function deleteitem_process(clicked_id)
+{
+  var table = document.getElementById("delivery_table");
+  var table_length = table.rows.length;
+  for(var i = 0; i < table_length; i++)
+  {
+    if(table.rows[i].cells[0].id == clicked_id)
+    {
+      table.deleteRow(i);
+      break;
+    }
+  }
+
+  table_length = table.rows.length;
+  for(var i = 0; i < table_length; i++)
+  {
+    table.rows[i].cells[0].innerHTML = '<td><b>' + (i + 1) + "</b></td>";;
+    
+    // table.rows[i].cells[1].innerHTML = '<td><div class="container" style="text-align: left;"><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-6"><b>Product</b><br><input type="text" class="form-control" id="add_del_desc" name="del_date-' + (i + 1) + '""readonly></div><div class="form-group col-md-3"><b>Quantity</b><br><input type="text" class="form-control" id="add_del_quantity" name="del_quantity-' + (i + 1) + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Manufacturer</b><br><input type="text" class="form-control" id="add_del_manufacturer" name="del_manufacturer-' + (i + 1) + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-3"><b>Brand</b><br><input type="text" class="form-control" id="add_del_brand" name="del_brand-' + (i + 1) + '" readonly></div><div class="form-group col-md-3"><b>Lot Number</b><br><input type="text" class="form-control" id="add_del_lotno" name="del_lotno-' + (i + 1) + '" readonly></div><div class="form-group col-md-3"><b>Expiration Date</b><br><input type="text" class="form-control" id="add_del_expiration" name="del_expiration_date-' + (i + 1) + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Remarks</b><br><input type="text" class="form-control" id="add_del_remarks" name="del_remarks-' + (i + 1) + '" readonly></div><div class="form-group col-md-2"><b>&nbsp</b><a class="pull-right btn btn-danger" onclick="deleteitem_process(' + table.rows[i].cells[0].id + ')" style="width:100%; color: white">Delete Item</a></div></div></td>';
+  }
+  // alert("this");
+}
+
+$('table').find('tr').each(function()
+{
+  var trResult= '';
+  $(this).find('td').each(function()
+  {
+    if(trResult.indexOf($(this).val()) ===-1)
+    trResult += $(this).val() +';';
+  });
+});
+
 function clicks()
 {
   alert("CLICKED!");
@@ -152,7 +222,6 @@ function searchtable()
       if(td)
       {
         txtvalue = td.innerText.trim().toLowerCase();
-        // alert(txtvalue);
         if(txtvalue.includes(txtfilter))
         {
           tr[i].style.display = "";

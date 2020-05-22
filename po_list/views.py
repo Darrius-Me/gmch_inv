@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import PurchaseOrder, Item, Department, AuthUser
+from .models import PurchaseOrder, Item, Department, AuthUser, Delivery, DeliveryItem
 
 # Create your views here.
 def po_home(request):
@@ -27,12 +27,12 @@ def po_list(request, pro="All Purchase Orders", dep="All Purchase Orders", fund=
                     order = PurchaseOrder.objects.all()
                 else:
                     order = PurchaseOrder.objects.filter(charge_to=fund)
-            elif(pro == "Processed Orders"):
+            elif(pro == "Completed Orders"):
                 if(fund == "All Funding"):
                     order = PurchaseOrder.objects.filter(is_processed=1)
                 else:
                     order = PurchaseOrder.objects.filter(is_processed=1, charge_to=fund)
-            elif(pro == "Unprocessed Orders"):
+            elif(pro == "Incomplete Orders"):
                 if(fund == "All Funding"):
                     order = PurchaseOrder.objects.filter(is_processed=0)
                 else:
@@ -45,12 +45,12 @@ def po_list(request, pro="All Purchase Orders", dep="All Purchase Orders", fund=
                     order = PurchaseOrder.objects.filter(department_id=temp_dep.id)
                 else:
                     order = PurchaseOrder.objects.filter(department_id=temp_dep.id, charge_to=fund)
-            elif(pro == "Processed Orders"):
+            elif(pro == "Completed Orders"):
                 if(fund == "All Funding"):
                     order = PurchaseOrder.objects.filter(department_id=temp_dep.id, is_processed=1)
                 else:
                     order = PurchaseOrder.objects.filter(department_id=temp_dep.id, is_processed=1, charge_to=fund)
-            elif(pro == "Unprocessed Orders"):
+            elif(pro == "Incomplete Orders"):
                 if(fund == "All Funding"):
                     order = PurchaseOrder.objects.filter(department_id=temp_dep.id, is_processed=0)
                 else:
@@ -164,16 +164,13 @@ def process_po(request, pro, dep, fund, po_number):
 
         return render(request, 'po_list/process_po.html', context={'po_number': po_number, 'po_dets': po_dets, 'department': department.name, 'itz': it})
 
-
 def processing_po(request, pro, dep, fund, po_number):
     if not request.user.is_authenticated:
         return render(request, 'home/home.html')
     else:
         if request.method == 'POST':
 
-            cts = 1
-            all_total = 0
-            allid=""
+            delivery_date = request.POST.get()
 
             while 'it' + str(cts) + '-1' in request.POST:
                 description = request.POST.get('it' + str(cts) + '-1')
@@ -228,4 +225,27 @@ def processing_po(request, pro, dep, fund, po_number):
 
         usr = AuthUser.objects.get(username=request.user.username)
         return redirect('.')
-        # return render(request, 'po_list/po_items.html', context={'usr': usr, 'po_dets': po_dets, 'itz': itz, 'department_name': department.name, 'allid': allid})
+
+def received_date(request, pro, dep, fund, po_number):
+    reqs = "not_received"
+
+    if not request.user.is_authenticated:
+        return render(request, 'home/home.html')
+    else:
+        if request.method == 'POST':
+
+            received_date = request.POST.get('date_received')
+
+            PO_N = PurchaseOrder.objects.get(po_num=po_number)
+            PO_N.date_received = received_date
+            PO_N.save()
+
+            reqs = received_date
+
+        # return redirect('.')
+
+        po_dets = PurchaseOrder.objects.get(po_num=po_number)
+        department = Department.objects.get(id=po_dets.department_id)
+        itz = Item.objects.filter(po_id=po_dets.id);
+        usr = AuthUser.objects.get(username=request.user.username)
+        return render(request, 'po_list/po_items.html', context={'usr': usr, 'po_dets': po_dets, 'itz': itz, 'department_name': department.name, 'reqs': reqs})
