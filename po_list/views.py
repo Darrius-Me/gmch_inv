@@ -69,8 +69,11 @@ def po_items(request, pro, dep, fund, po_number):
         department = Department.objects.get(id=po_dets.department_id)
         itz = Item.objects.filter(po_id=po_dets.id);
 
+        po_del = Delivery.objects.filter(po_id=po_dets.id)
+        po_del_it = DeliveryItem.objects.all()
+
         usr = AuthUser.objects.get(username=request.user.username)
-        return render(request, 'po_list/po_items.html', context={'usr': usr, 'po_dets': po_dets, 'itz': itz, 'department_name': department.name})
+        return render(request, 'po_list/po_items.html', context={'usr': usr, 'po_dets': po_dets, 'itz': itz, 'department_name': department.name, 'po_del': po_del, 'po_del_it': po_del_it})
 
 def add_po(request):
     if not request.user.is_authenticated:
@@ -162,7 +165,10 @@ def process_po(request, pro, dep, fund, po_number):
         department = Department.objects.get(id=po_dets.department_id)
         it = Item.objects.filter(po_id=po_dets.id);
 
-        return render(request, 'po_list/process_po.html', context={'po_number': po_number, 'po_dets': po_dets, 'department': department.name, 'itz': it})
+        po_del = Delivery.objects.filter(po_id=po_dets.id)
+        po_del_it = DeliveryItem.objects.all()
+
+        return render(request, 'po_list/process_po.html', context={'po_number': po_number, 'po_dets': po_dets, 'department': department.name, 'itz': it, 'po_del': po_del, 'po_del_it': po_del_it})
 
 def processing_po(request, pro, dep, fund, po_number):
     if not request.user.is_authenticated:
@@ -170,60 +176,52 @@ def processing_po(request, pro, dep, fund, po_number):
     else:
         if request.method == 'POST':
 
-            delivery_date = request.POST.get()
+            delivery_date = request.POST.get('delivery_date')
+            delivery_invoice = request.POST.get('delivery_invoice')
+            po_number = request.POST.get('po_number_del')
 
-            while 'it' + str(cts) + '-1' in request.POST:
-                description = request.POST.get('it' + str(cts) + '-1')
-                brand = request.POST.get('it' + str(cts) + '-2')
-                manufacturer = request.POST.get('it' + str(cts) + '-3')
-                lotno = request.POST.get('it' + str(cts) + '-4')
-                quantity = request.POST.get('it' + str(cts) + '-5')
-                onhand_qty = request.POST.get('it' + str(cts) + '-6')
-                unit = request.POST.get('it' + str(cts) + '-7')
-                unit_cost = request.POST.get('it' + str(cts) + '-8')
-                total_cost = request.POST.get('it' + str(cts) + '-9')
-                expiration_date = request.POST.get('it' + str(cts) + '-10')
-                remarks = request.POST.get('it' + str(cts) + '-11')
-                status = request.POST.get('it' + str(cts) + '-12')
-                delivery_date = request.POST.get('it' + str(cts) + '-13')
-                invoice_number = request.POST.get('it' + str(cts) + '-14')
-                id = request.POST.get('it' + str(cts) + '-0')
+            PO = PurchaseOrder.objects.get(po_num=po_number)
+
+            DEL = Delivery(date=delivery_date, invoice=delivery_invoice, current_total_amount=0, po_id=PO.id)
+            DEL.save()
+
+            DEL_N = Delivery.objects.get(date=delivery_date, invoice=delivery_invoice)
+
+            cts = 1
+            total_cost = 0
+            all_total = 0
+            count = 0
+
+            while 'it-1-' + str(cts) in request.POST:
+                description = request.POST.get('it-1-' + str(cts))
+                quantity = request.POST.get('it-2-' + str(cts))
+                manufacturer = request.POST.get('it-3-' + str(cts))
+                brand = request.POST.get('it-4-' + str(cts))
+                lotno = request.POST.get('it-5-' + str(cts))
+                expiration_date = request.POST.get('it-6-' + str(cts))
+                remarks = request.POST.get('it-7-' + str(cts))
+                item_id = request.POST.get('it-8-' + str(cts))
+                unit_cost = request.POST.get('it-9-' + str(cts))
 
                 total_cost = float(quantity) * float(unit_cost)
                 all_total = all_total + total_cost
 
-                it = Item.objects.get(id=id);
+                DELITEM = DeliveryItem(item_id=item_id, item_desc=description, brand=brand, quantity=quantity, manufacturer=manufacturer, lot_number=lotno, expiration_date=expiration_date, amount=total_cost, delivery_id=DEL_N.id)
+                DELITEM.save()
 
-                it.description = description
-                it.brand = brand
-                it.manufacturer = manufacturer
-                it.batch_lot_num = lotno
-                it.quantity = quantity
-                it.onhand_qty = onhand_qty
-                it.losses = float(quantity) - float(onhand_qty)
-                it.unit = unit
-                it.unit_cost = unit_cost
-                it.total_cost = total_cost
-                it.expiration_date = expiration_date
-                it.remarks = remarks
-                it.status = status
-                it.delivery_date = delivery_date
-                it.invoice_number = invoice_number
+                IT = Item.objects.get(id=item_id)
+                count = int(IT.onhand_qty) + int(quantity)
+                IT.onhand_qty = count
+                count = int(IT.quantity) - int(quantity)
+                IT.losses = count
+                IT.save()
 
-                it.save()
-                allid = allid + "-" + str(id)
                 cts = cts + 1
 
-        PO_N = PurchaseOrder.objects.get(po_num=po_number)
-        PO_N.total_amount = all_total
-        # PO_N.is_processed = 1
-        PO_N.save()
 
-        po_dets = PurchaseOrder.objects.get(po_num=po_number)
-        department = Department.objects.get(id=po_dets.department_id)
-        itz = Item.objects.filter(po_id=po_dets.id);
+            DEL_N.current_total_amount = all_total
+            DEL_N.save()
 
-        usr = AuthUser.objects.get(username=request.user.username)
         return redirect('.')
 
 def received_date(request, pro, dep, fund, po_number):
@@ -248,4 +246,5 @@ def received_date(request, pro, dep, fund, po_number):
         department = Department.objects.get(id=po_dets.department_id)
         itz = Item.objects.filter(po_id=po_dets.id);
         usr = AuthUser.objects.get(username=request.user.username)
-        return render(request, 'po_list/po_items.html', context={'usr': usr, 'po_dets': po_dets, 'itz': itz, 'department_name': department.name, 'reqs': reqs})
+        # return render(request, 'po_list/po_items.html', context={'usr': usr, 'po_dets': po_dets, 'itz': itz, 'department_name': department.name, 'reqs': reqs})
+        return redirect('.')

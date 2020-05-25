@@ -76,9 +76,10 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Delivery(models.Model):
-    date = models.IntegerField()
+    date = models.CharField(max_length=255)
     invoice = models.CharField(max_length=255)
-    current_total_amount = models.IntegerField()
+    current_total_amount = models.FloatField()
+    po_id = models.IntegerField()
 
     class Meta:
         managed = False
@@ -87,11 +88,13 @@ class Delivery(models.Model):
 
 class DeliveryItem(models.Model):
     item_id = models.CharField(max_length=255)
+    item_desc = models.CharField(max_length=255)
     brand = models.CharField(max_length=255)
     quantity = models.IntegerField()
     manufacturer = models.CharField(max_length=255)
     lot_number = models.CharField(max_length=255)
     expiration_date = models.CharField(max_length=255)
+    amount = models.IntegerField()
     delivery_id = models.IntegerField()
 
     class Meta:
@@ -189,7 +192,7 @@ class PurchaseOrder(models.Model):
     delivery_term = models.CharField(max_length=255)
     delivery_date = models.CharField(max_length=255)
     payment_term = models.CharField(max_length=255)
-    total_amount = models.IntegerField()
+    total_amount = models.FloatField()
     is_processed = models.IntegerField()
     date_received = models.CharField(max_length=255)
     amount_loss = models.IntegerField()

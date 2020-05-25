@@ -117,7 +117,7 @@
 
           <div class="form-group col-md-2">
             <b>Date Received</b><br>
-            {% if po_dets.date_received == "" %}
+            {% if po_dets.date_received == '' %}
               <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#date_received_window" style="width: 100%">ENTER DATE</button>
               <div class="modal fade" id="date_received_window" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -145,7 +145,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="submit" class="btn btn-primary" form="recieved_date_form">Save changes</button>
+                      <button type="submit" class="btn btn-primary" form="received_date_form">Save changes</button>
                     </div>
                   </div>
                 </div>
@@ -163,7 +163,7 @@
         <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
       </div>
 
-      <div class="container" style="border: 1px solid black; padding: 10px">
+      <div class="container" style="background-color: #d7f3ff; padding: 10px">
         <div class="col-md-12" style="margin-bottom: 10px">
           <div class="form-row">
             <div class="col-md-5">&nbsp</div>
@@ -253,54 +253,72 @@
           </div>
         </div>
       </div>
-      <div class="container" style="border: 1px solid black; padding: 10px">
-        <div class="col-md-12" style="margin-bottom: 10px">
+      <div class="container" style="background-color: #d3fcff">
+        <div class="col-md-12" style="padding-top: 10px">
           <div class="form-row">
-            <div class="col-md-5">&nbsp</div>
-            <div class="col-md-2">
-              <a class="btn btn-primary" href="#delivery_list" data-toggle="collapse" style="width: 100%">Toggle Deliveries</a>
+            <div class="form-group col-md-5">&nbsp</div>
+            <div class="form-group col-md-2">
+              <button class="btn btn-primary" data-toggle="collapse" data-target="#deliveries" style="width: 100%">Toggle Deliveries</button>
             </div>
           </div>
         </div>
-        <div id="delivery_list" class="collapse" style="margin: 0 auto; text-align: center; width: 97%;">
-          <div class="container" style="margin-top: 10px; border: 1px solid gray; padding: 10px">
-            <form class="" action="index.html" method="post">
-              {% csrf_token %}
-              <div style="text-align: left">
-                <div class="form-row">
-                  <div class="col-md-3"></div>
-                  <div class="col-md-3">
-                    <b>Delivery Date</b><br>
-                    <input type="text" class="form-control" name="delivery_exp" value="">
-                  </div>
-                  <div class="col-md-3">
-                    <b>Invoice</b><br>
-                    <input type="text" class="form-control" name="delivery_exp" placeholder="#">
-                  </div>
+        <div class="collapse" id="deliveries" style="width: 98%; margin-left: 1%; padding-bottom: 10px">
+          <div class="panel-group" id="delivery_accordion">
+            {% for del in po_del %}
+              <div class="panel panel-default" style="border-top: 1px solid #513bff; border-bottom: 1px solid #513bff">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#delivery_accordion" href="#collapse-{{ del.id }}">{{ del.date }} - #{{ del.invoice }}</a>
+                  </h4>
+                </div>
+                <div id="collapse-{{ del.id }}" class="panel-collapse collapse in">
+                  <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                      <tr >
+                        <th class="text-center" style="width: 5%">
+                          #
+                        </th>
+                        <th class="text-center" style="width: 70%">
+                          Item
+                        </th>
+                        <th class="text-center">
+                          Quantity
+                        </th>
+                        <th class="text-center">
+                          Amount
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for del_it in po_del_it %}
+                      <tr id='addr0'>
+                        {% if del.id == del_it.delivery_id %}
+                          <td id='showtable'>
+                            <b>{{ forloop.counter }}</b>
+                          </td>
+                          <td id='showtable' style="text-align: left">
+                            <b>{{ del_it.item_desc }}</b>
+                            ({{ del_it.brand }})<br>
+                            {{ del_it.manufacturer }}
+                          </td>
+                          <td id='showtable'>
+                            <b>{{ del_it.quantity }}</b>
+                          </td>
+                          <td id='showtable'>
+                            <b>{{ del_it.amount }}</b>
+                          </td>
+                        {% endif %}
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-              <div class="">
-                &nbsp
-              </div>
-              <table class="table table-bordered table-hover" syle="margin-top: 10px">
-                <thead>
-                  <tr >
-                    <th class="text-center" style="width: 5%">
-                      #
-                    </th>
-                    <th class="text-center">
-                      Item
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="delivery_table_show">
-                </tbody>
-              </table>
-            </form>
+            {% endfor %}
           </div>
         </div>
       </div>
-      <div class="container" style="border: 1px solid black; padding: 10px">
+      <div class="container" style="padding: 10px; background-color: #fffb93">
         <div class="col-md-12" style="margin-bottom: 10px">
           <div class="form-row">
             <div class="col-md-5">&nbsp</div>
@@ -320,7 +338,7 @@
                     <input type="hidden" class="form-control" name="it{{ forloop.counter }}-0" value='{{ it.id }}'>
                     <select class="form-control" id="adddelivery_description" style="font-weight: bold">
                       {% for i in itz %}
-                        <option value="{{ i.description }}" style="font-weight: bold">{{ i.description }}</option>
+                        <option value="{{ i.description }}-{{ i.id }}-{{ i.unit_cost }}" style="font-weight: bold">{{ i.description }}</option>
                       {% endfor %}
                     </select>
                   </div>
@@ -370,31 +388,40 @@
                   <div class="col-md-3"></div>
                   <div class="col-md-3">
                     <b>Delivery Date</b><br>
-                    <input type="date" class="form-control" name="delivery_exp">
+                    <input type="date" class="form-control" name="delivery_date">
                   </div>
                   <div class="col-md-3">
                     <b>Invoice</b><br>
-                    <input type="text" class="form-control" name="delivery_exp" placeholder="#">
+                    <input type="text" class="form-control" name="delivery_invoice" placeholder="#">
+                    <input type="hidden" name="po_number_del" value="{{ po_number }}"
                   </div>
                 </div>
               </div>
               <div class="">
                 &nbsp
               </div>
-              <table class="table table-bordered table-hover" syle="margin-top: 10px">
-                <thead>
-                  <tr >
-                    <th class="text-center" style="width: 5%">
-                      #
-                    </th>
-                    <th class="text-center">
-                      Item
-                    </th>
-                  </tr>
-                </thead>
-                <tbody id="delivery_table">
-                </tbody>
-              </table>
+              <div style="background-color: #fff957">
+                <table class="table table-bordered table-hover" syle="margin-top: 10px">
+                  <thead>
+                    <tr >
+                      <th class="text-center" style="width: 5%">
+                        #
+                      </th>
+                      <th class="text-center">
+                        Item
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody id="delivery_table">
+                  </tbody>
+                </table>
+              </div>
+              <div class="form-row">
+                <div class="col-md-5">&nbsp</div>
+                <div class="col-md-2" style="margin-top: 20px">
+                  <a class="pull-right btn btn-danger" onclick="deleteitem_process()" style="width:100%; color: white">Delete Item</a>
+                </div>
+              </div>
             </form>
           </div>
         </div>

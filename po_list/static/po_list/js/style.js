@@ -124,7 +124,10 @@ function additem_process()
 {
   // alert("added items");
   var desc = document.getElementById("adddelivery_description");
-  var description = desc.options[desc.selectedIndex].text;
+  var desc_temp = desc.options[desc.selectedIndex].value.split("-");
+  var description = desc_temp[0];
+  var item_id = desc_temp[1];
+  var unit_cost = desc_temp[2];
 
   var quantity = document.getElementById("adddelivery_quantity").value;
   var manufacturer = document.getElementById("adddelivery_manufacturer").value;
@@ -153,8 +156,7 @@ function additem_process()
   cell1.id = id;
 
   cell1.innerHTML = '<td><b>' + table.rows.length + "</b></td>";
-  // cell2.innerHTML = '<td><div class="container" style="text-align: left;"><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-6"><b>Product</b><br><input type="text" class="form-control" id="add_del_desc" value="' + description +'"readonly></div><div class="form-group col-md-3"><b>Quantity</b><br><input type="text" class="form-control" id="add_del_quantity" value="' + quantity + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Manufacturer</b><br><input type="text" class="form-control" id="add_del_manufacturer" value="' + manufacturer + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-3"><b>Brand</b><br><input type="text" class="form-control" id="add_del_brand" value="' + brand + '" readonly></div><div class="form-group col-md-3"><b>Lot Number</b><br><input type="text" class="form-control" id="add_del_lotno" value="' + lotno + '" readonly></div><div class="form-group col-md-3"><b>Expiration Date</b><br><input type="text" class="form-control" id="add_del_expiration" value="' + expiration_date + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Remarks</b><br><input type="text" class="form-control" id="add_del_remarks" value="' + remarks + '" readonly></div><div class="form-group col-md-2"><b>&nbsp</b><a class="pull-right btn btn-danger" onclick="deleteitem_process(' + id + ')" style="width:100%; color: white">Delete Item</a></div></div></td>';
-  cell2.innerHTML = '<td><div class="container" style="text-align: left;"><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-6"><b>Product</b><br><input type="text" class="form-control" id="add_del_desc" name="del_date-' + table.rows.length + '" value="' + description +'"readonly></div><div class="form-group col-md-3"><b>Quantity</b><br><input type="text" class="form-control" id="add_del_quantity" value="' + quantity + '" name="del_quantity-' + table.rows.length + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Manufacturer</b><br><input type="text" class="form-control" id="add_del_manufacturer" value="' + manufacturer + '" name="del_manufacturer-' + table.rows.length + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-3"><b>Brand</b><br><input type="text" class="form-control" id="add_del_brand" value="' + brand + '" name="del_brand-' + table.rows.length + '" readonly></div><div class="form-group col-md-3"><b>Lot Number</b><br><input type="text" class="form-control" id="add_del_lotno" value="' + lotno + '" name="del_lotno-' + table.rows.length + '" readonly></div><div class="form-group col-md-3"><b>Expiration Date</b><br><input type="text" class="form-control" id="add_del_expiration" value="' + expiration_date + '" name="del_expiration_date-' + table.rows.length + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Remarks</b><br><input type="text" class="form-control" id="add_del_remarks" value="' + remarks + '" name="del_remarks-' + table.rows.length + '" readonly></div><div class="form-group col-md-2"><b>&nbsp</b><a class="pull-right btn btn-danger" onclick="deleteitem_process(' + id + ')" style="width:100%; color: white">Delete Item</a></div></div></td>';
+  cell2.innerHTML = '<td><div class="container" style="text-align: left;"><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-6"><b>Product</b><br><input type="text" class="form-control" id="add_del_desc" name="it-1-' + table.rows.length + '" value="' + description +'"readonly></div><div class="form-group col-md-3"><b>Quantity</b><br><input type="text" class="form-control" id="add_del_quantity" value="' + quantity + '" name="it-2-' + table.rows.length + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Manufacturer</b><br><input type="text" class="form-control" id="add_del_manufacturer" value="' + manufacturer + '" name="it-3-' + table.rows.length + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-3"><b>Brand</b><br><input type="text" class="form-control" id="add_del_brand" value="' + brand + '" name="it-4-' + table.rows.length + '" readonly></div><div class="form-group col-md-3"><b>Lot Number</b><br><input type="text" class="form-control" id="add_del_lotno" value="' + lotno + '" name="it-5-' + table.rows.length + '" readonly></div><div class="form-group col-md-3"><b>Expiration Date</b><br><input type="text" class="form-control" id="add_del_expiration" value="' + expiration_date + '" name="it-6-' + table.rows.length + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Remarks</b><br><input type="text" class="form-control" id="add_del_remarks" value="' + remarks + '" name="it-7-' + table.rows.length + '" readonly><input type="hidden" name="it-8-' + table.rows.length + '" value="' + item_id +'"><input type="hidden" name="it-9-' + table.rows.length + '" value="' + unit_cost +'"></div><div class="form-group col-md-2"><b>&nbsp</b></div></div></td>';
 
   document.getElementById("adddelivery_quantity").value = "";
   document.getElementById("adddelivery_manufacturer").value = "";
@@ -169,23 +171,11 @@ function deleteitem_process(clicked_id)
 {
   var table = document.getElementById("delivery_table");
   var table_length = table.rows.length;
-  for(var i = 0; i < table_length; i++)
-  {
-    if(table.rows[i].cells[0].id == clicked_id)
-    {
-      table.deleteRow(i);
-      break;
-    }
-  }
 
-  table_length = table.rows.length;
-  for(var i = 0; i < table_length; i++)
+  if(table.rows.length > 0)
   {
-    table.rows[i].cells[0].innerHTML = '<td><b>' + (i + 1) + "</b></td>";;
-    
-    // table.rows[i].cells[1].innerHTML = '<td><div class="container" style="text-align: left;"><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-6"><b>Product</b><br><input type="text" class="form-control" id="add_del_desc" name="del_date-' + (i + 1) + '""readonly></div><div class="form-group col-md-3"><b>Quantity</b><br><input type="text" class="form-control" id="add_del_quantity" name="del_quantity-' + (i + 1) + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Manufacturer</b><br><input type="text" class="form-control" id="add_del_manufacturer" name="del_manufacturer-' + (i + 1) + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-3"><b>Brand</b><br><input type="text" class="form-control" id="add_del_brand" name="del_brand-' + (i + 1) + '" readonly></div><div class="form-group col-md-3"><b>Lot Number</b><br><input type="text" class="form-control" id="add_del_lotno" name="del_lotno-' + (i + 1) + '" readonly></div><div class="form-group col-md-3"><b>Expiration Date</b><br><input type="text" class="form-control" id="add_del_expiration" name="del_expiration_date-' + (i + 1) + '" readonly></div></div><div class="form-row"><div class="form-group col-md-1"></div><div class="form-group col-md-9"><b>Remarks</b><br><input type="text" class="form-control" id="add_del_remarks" name="del_remarks-' + (i + 1) + '" readonly></div><div class="form-group col-md-2"><b>&nbsp</b><a class="pull-right btn btn-danger" onclick="deleteitem_process(' + table.rows[i].cells[0].id + ')" style="width:100%; color: white">Delete Item</a></div></div></td>';
+    table.deleteRow(table.rows.length-1);
   }
-  // alert("this");
 }
 
 $('table').find('tr').each(function()
