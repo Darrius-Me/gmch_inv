@@ -11,17 +11,19 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a href="../.." class="btn"><b>HOME</b></a>
   <h4>|</h4>
-  <a href=".." class="btn"><b>BACK</b></a>
+  <a href=".." class="btn" style="color: red"><b>BACK</b></a>
   <div class="collapse navbar-collapse" style="margin-left: 50px">
 
     <ul class="navbar-nav mr-auto"></ul>
 
     {% if user.is_authenticated %}
+        <b>Logged in as <u style="color: red">{{ user.username }}</u>|
       {% if user.is_superuser %}
-        <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% else %}
-        <b>Logged in as {{ user.username }} | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% endif %}
+        </b>
     {% else %}
       <b>LOG IN LOGOUT</b>
     {% endif %}

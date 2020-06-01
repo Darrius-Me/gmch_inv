@@ -50,6 +50,12 @@ function validate_delivery(key)
       document.getElementById("error_delivery_label").innerHTML = "<p><b>All entries should be filled except REMARKS.<br>Please enter the correct details.</b></p>";
       $("#error_delivery").modal();
     }
+    else if(isNaN(quantity))
+    {
+      document.getElementById("adddelivery_toggle").scrollIntoView();
+      document.getElementById("error_delivery_label").innerHTML = "<p><b>Invalid quantity.<br>Please enter the correct details.</b></p>";
+      $("#error_delivery").modal();
+    }
     else
     {
       additem_process();
@@ -70,9 +76,9 @@ function verifyadd()
 
   if(unit == "" || unit == null)
     return "Unit!";
-  else if(quantity == "" || quantity == null)
+  else if(quantity == "" || quantity == null || isNaN(quantity))
     return "Quantity!";
-  else if(unit_cost == "" || unit_cost == null)
+  else if(unit_cost == "" || unit_cost == null || isNaN(unit_cost))
     return "Unit Cost!";
   else if(description == "" || description == null)
     return "Description!";
@@ -97,9 +103,7 @@ function addrow()
   }
   else
   {
-    // alert("Error " + verified);
-    // document.getElementById("adddelivery_toggle").scrollIntoView();
-    document.getElementById("error_add_label").innerHTML = "<p><b>Error " + verified + " All entries should be filled.<br>Please enter the correct details.</b></p>";
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error " + verified + " All entries should be filled with correct details.<br>Please enter the correct details.</b></p>";
     $("#error_add").modal();
   }
 }

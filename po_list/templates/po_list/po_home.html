@@ -17,11 +17,13 @@
     <ul class="navbar-nav mr-auto"></ul>
 
     {% if user.is_authenticated %}
+        <b>Logged in as <u style="color: red">{{ user.username }}</u>|
       {% if user.is_superuser %}
-        <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% else %}
-        <b>Logged in as {{ user.username }} | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% endif %}
+        </b>
     {% else %}
       <b>LOG IN LOGOUT</b>
     {% endif %}
@@ -50,9 +52,9 @@
     <div style="background-color: #ff5a59; height: 50%; width: 100%; display: flex; text-align: center; justify-content: center; align-items: center">
       <h3 style="color: black">ADD PO <br>(Not authorized)</h3>
     </div>
-    <a href="./Unprocessed Orders-All Departments-All Funding">
+    <a href="./Incomplete Orders-All Departments-All Funding">
       <div style="background-color: #ffb1b0; height: 50%; width: 100%; display: flex; justify-content: center; align-items: center">
-        <h3 style="color: black">UNPROCESSED PO</h3>
+        <h3 style="color: black">INCOMPLETE PO</h3>
       </div>
     </a>
     {% endif %}

@@ -40,11 +40,13 @@
     </ul>
 
     {% if user.is_authenticated %}
+        <b>Logged in as <u style="color: red">{{ user.username }}</u>|
       {% if user.is_superuser %}
-        <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% else %}
-        <b>Logged in as {{ user.username }} | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% endif %}
+        </b>
     {% else %}
       <b>LOG IN LOGOUT</b>
     {% endif %}
