@@ -1,7 +1,7 @@
 <head>
   {% load static %}
   <script src="{% static 'po_list/js/style.js' %}"></script>
-  <script src="{% static 'po_list/js/jquery.js' %}"></script>
+  <script src="{% static 'po_list/js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
   <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'po_list/css/style.css' %}">
@@ -32,11 +32,9 @@
   {% csrf_token %}
   <div class="" style="margin: 0 auto; border: solid; border-width: 1px; width: 97%; height: 79%; padding-bottom: 10px; overflow-y: scroll;">
       <div class="container" style="margin-top: 10px;">
-        <h1 style="text-align: center; margin-bottom: 20px">Add PO</h1>
+        <h1 style="text-align: center; margin-bottom: 20px" id="addfirsthalf">Add PO</h1>
+        <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
         <div class="form-row">
-          <div class="form-group col-md-12" style="background-color: black">
-            <label for="invoice">&nbsp</label>
-          </div>
           <div class="form-group col-md-3">
             <label for="invoice">&nbsp</label>
           </div>
@@ -56,20 +54,18 @@
             </select>
           </div>
         </div>
-        <div class="form-group col-md-12" style="background-color: black">
-          <label for="invoice">&nbsp</label>
-        </div>
+        <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
         <div class="form-row">
           <div class="form-group col-md-2">
             &nbsp
           </div>
           <div class="form-group col-md-3">
             <label for="inpo">Purchase Order Number</label>
-            <input type="text" class="form-control" name="inpo" placeholder="PO #">
+            <input type="text" class="form-control" name="inpo" id="inpo" placeholder="PO #">
           </div>
           <div class="form-group col-md-5">
             <label for="insup">Supplier</label>
-            <input type="text" class="form-control" name="insup" placeholder="Company">
+            <input type="text" class="form-control" name="insup" id="insup" placeholder="Company">
           </div>
           <div class="form-group col-md-2">
             &nbsp
@@ -78,8 +74,8 @@
             &nbsp
           </div>
           <div class="form-group col-md-8">
-            <label for="inadd">Address</label>
-            <input type="text" class="form-control" name="inadd" placeholder="Address">
+            <label for="inadd" id="addsecondhalf">Address</label>
+            <input type="text" class="form-control" name="inadd" id="inadd" placeholder="Address">
           </div>
           <div class="form-group col-md-2">
             &nbsp
@@ -93,39 +89,37 @@
           </div>
           <div class="form-group col-md-2">
             <label for="inmode">Mode of Procurement</label>
-            <input type="text" class="form-control" name="inmode" placeholder="PO #">
+            <input type="text" class="form-control" name="inmode" id="inmode" placeholder="PO #">
           </div>
           <div class="form-group col-md-2">
             <label for="inpr">Purchase Request No.</label>
-            <input type="text" class="form-control" name="inpr" placeholder="PR #">
+            <input type="text" class="form-control" name="inpr" id="inpr" placeholder="PR #">
           </div>
           <div class="form-group col-md-2">
             <label for="intr">Tracking Number</label>
-            <input type="text" class="form-control" name="intr" placeholder="TRACKING #">
+            <input type="text" class="form-control" name="intr" id="intr" placeholder="TRACKING #">
           </div>
         </div>
-        <div class="form-group col-md-12" style="background-color: black">
-          <label for="invoice">&nbsp</label>
-        </div>
+        <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
         <div class="form-row">
           <div class="form-group col-md-1">&nbsp</div>
           <div class="form-group col-md-5">
             <label for="delplace">Place of Delivery</label>
-            <input type="text" class="form-control" name="delplace" placeholder="#">
+            <input type="text" class="form-control" name="delplace" id="delplace" placeholder="#">
           </div>
           <div class="form-group col-md-5">
             <label for="delterm">Delivery Term</label>
-            <input type="text" class="form-control" name="delterm" placeholder="#">
+            <input type="text" class="form-control" name="delterm" id="delterm" placeholder="#">
           </div>
           <div class="form-group col-md-1">&nbsp</div>
           <div class="form-group col-md-1">&nbsp</div>
           <div class="form-group col-md-5">
             <label for="deldate">Date of Delivery</label>
-            <input type="text" class="form-control" name="deldate" placeholder="#">
+            <input type="text" class="form-control" name="deldate" id="deldate" placeholder="#">
           </div>
           <div class="form-group col-md-5">
             <label for="payterm">Payment Term</label>
-            <input type="text" class="form-control" name="payterm" placeholder="#">
+            <input type="text" class="form-control" name="payterm" id="payterm" placeholder="#">
           </div>
 
         </div>
@@ -136,7 +130,7 @@
       <div class="container" style="margin: 0 auto; text-align: center; width: 97%;">
         <div class="row clearfix">
         	<div class="col-md-12 column">
-              <table class="table table-bordered table-hover" id="addtable">
+              <table class="table table-bordered table-hover" id="addtable_main">
           			<thead>
           				<tr >
           					<th class="text-center" style="width: 5%">
@@ -157,26 +151,26 @@
                         <div class="form-group col-md-1"></div>
                         <div class="form-group col-md-3">
                           <label for="it13">Unit</label>
-                          <input type="text" class="form-control" name="it13" placeholder="#">
+                          <input type="text" class="form-control" id="it13" name="it13" placeholder="#">
                         </div>
                         <div class="form-group col-md-3">
                           <label for="it14">Quantity</label>
-                          <input type="text" class="form-control" name="it14" placeholder="#">
+                          <input type="text" class="form-control" id="it14" name="it14" placeholder="#">
                         </div>
                         <div class="form-group col-md-3">
                           <label for="it15">Unit Cost</label>
-                          <input type="text" class="form-control" name="it15" placeholder="#">
+                          <input type="text" class="form-control" id="it15" name="it15" placeholder="#">
                         </div>
                       </div>
                       <div class="form-row">
                         <div class="form-group col-md-1"></div>
                         <div class="form-group col-md-6">
                           <label for="it11">Description</label>
-                          <input type="text" class="form-control" name="it11" placeholder="#">
+                          <input type="text" class="form-control" id="it11" name="it11" placeholder="#">
                         </div>
                         <div class="form-group col-md-3">
                           <label for="it12">Brand</label>
-                          <input type="text" class="form-control" name="it12" placeholder="#">
+                          <input type="text" class="form-control" id="it12" name="it12" placeholder="#">
                         </div>
                       </div>
           					</td>
@@ -190,7 +184,49 @@
       </div>
     </div>
     <div class="" style="margin: 0 auto; padding-top: 10px; text-align: center">
-      <button type="submit" class="btn btn-primary" onclick="validate_add()">SUBMIT</button>
+      <button type="button" class="btn btn-primary" onclick="submit_add()">SUBMIT</button>
     </div>
   </form>
+</div>
+
+<div class="modal fade" id="error_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="col-md-12" style="text-align: center; color: red">
+          <h4 class="modal-title" id="exampleModalLabel"><b>ERROR!</b></h4>
+        </div>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <p id="error_add_label"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="proceed_add" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="col-md-12" style="text-align: center; color: green">
+          <h4 class="modal-title" id="exampleModalLabel"><b>WARNING!</b></h4>
+        </div>
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <b>This process cannot be undone. <br>Please double check your entry. <br>Continue?</b>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" form="add_po_details">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>

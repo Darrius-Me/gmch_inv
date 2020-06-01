@@ -1,6 +1,6 @@
 <head>
   {% load static %}
-  <script src="{% static 'po_list/js/jquery.js' %}"></script>
+  <script src="{% static 'po_list/js/style.js' %}"></script>
   <script src="{% static 'po_list/js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
   <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
@@ -51,7 +51,7 @@
   </div>
 </nav>
 
-<div class="container" style="padding-top: 1%; padding-bottom: 1%; text-transform: uppercase">
+<div class="container" style="padding-top: 1%; padding-bottom: 1%;">
   <h3 style="text-align: center" id="tableplaceholder">
     <u style="color: #019519">{{ pro }}</u>
     from
@@ -85,7 +85,7 @@
         <th scope="col">Status</th>
       </tr>
     </thead>
-  <tbody>
+    <tbody>
 
       {% for po in pos %}
         <tr>

@@ -69,7 +69,7 @@ def po_items(request, pro, dep, fund, po_number):
         department = Department.objects.get(id=po_dets.department_id)
         itz = Item.objects.filter(po_id=po_dets.id);
 
-        po_del = Delivery.objects.filter(po_id=po_dets.id)
+        po_del = Delivery.objects.filter(po_id=po_dets.id).order_by('date')
         po_del_it = DeliveryItem.objects.all()
 
         usr = AuthUser.objects.get(username=request.user.username)
@@ -112,10 +112,10 @@ def process_add(request, deps="All Purchase Orders"):
 
             dep_name = Department.objects.get(id=in_dep)
 
-            PO = PurchaseOrder(department_id=in_dep, charge_to=in_charge, po_num=in_po, supplier=in_sup, address=in_add, date=in_date, mode=in_mode, pr_num=in_pr, tracking_num=in_tr, delivery_place=del_place, delivery_term=del_term, delivery_date=del_date, payment_term=pay_term, total_amount=0, is_processed=0)
+            PO = PurchaseOrder(department_id=in_dep, charge_to=in_charge, po_num=in_po, supplier=in_sup, address=in_add, date=in_date, mode=in_mode, pr_num=in_pr, tracking_num=in_tr, delivery_place=del_place, delivery_term=del_term, delivery_date=del_date, payment_term=pay_term, total_amount=0, is_processed=0, amount_loss=0)
             PO.save()
             cts = 1
-            PO_N = PurchaseOrder.objects.get(date=in_date, pr_num=in_pr)
+            PO_N = PurchaseOrder.objects.get(po_num=in_po, date=in_date, pr_num=in_pr)
             total_am = 0
 
             while 'it' + str(cts) + '1' in request.POST:
@@ -132,6 +132,7 @@ def process_add(request, deps="All Purchase Orders"):
                 cts = cts + 1
 
             PO_N.total_amount = total_am
+            PO_N.amount_loss = total_am
             PO_N.save()
 
             po_dets = {
@@ -165,7 +166,7 @@ def process_po(request, pro, dep, fund, po_number):
         department = Department.objects.get(id=po_dets.department_id)
         it = Item.objects.filter(po_id=po_dets.id);
 
-        po_del = Delivery.objects.filter(po_id=po_dets.id)
+        po_del = Delivery.objects.filter(po_id=po_dets.id).order_by('date')
         po_del_it = DeliveryItem.objects.all()
 
         return render(request, 'po_list/process_po.html', context={'po_number': po_number, 'po_dets': po_dets, 'department': department.name, 'itz': it, 'po_del': po_del, 'po_del_it': po_del_it})
@@ -191,6 +192,9 @@ def processing_po(request, pro, dep, fund, po_number):
             total_cost = 0
             all_total = 0
             count = 0
+            loss_count = 0
+            amount_loss = 0
+            all_amount_loss = 0
 
             while 'it-1-' + str(cts) in request.POST:
                 description = request.POST.get('it-1-' + str(cts))
@@ -203,7 +207,7 @@ def processing_po(request, pro, dep, fund, po_number):
                 item_id = request.POST.get('it-8-' + str(cts))
                 unit_cost = request.POST.get('it-9-' + str(cts))
 
-                total_cost = float(quantity) * float(unit_cost)
+                total_cost = float(float(quantity) * float(unit_cost))
                 all_total = all_total + total_cost
 
                 DELITEM = DeliveryItem(item_id=item_id, item_desc=description, brand=brand, quantity=quantity, manufacturer=manufacturer, lot_number=lotno, expiration_date=expiration_date, amount=total_cost, delivery_id=DEL_N.id)
@@ -212,13 +216,21 @@ def processing_po(request, pro, dep, fund, po_number):
                 IT = Item.objects.get(id=item_id)
                 count = int(IT.onhand_qty) + int(quantity)
                 IT.onhand_qty = count
-                count = int(IT.quantity) - int(quantity)
-                IT.losses = count
+                loss_count = int(IT.quantity) - int(quantity)
+                IT.losses = loss_count
+                amount_loss = float(float(quantity) * float(unit_cost))
+                all_amount_loss = float(all_amount_loss) + amount_loss
                 IT.save()
 
                 cts = cts + 1
 
+            TEMP_LOSS = PO.amount_loss
+            PO.amount_loss = TEMP_LOSS - all_amount_loss
 
+            if PO.amount_loss == 0 and PO.date_received != "":
+                PO.is_processed = 1
+
+            PO.save()
             DEL_N.current_total_amount = all_total
             DEL_N.save()
 
@@ -236,15 +248,18 @@ def received_date(request, pro, dep, fund, po_number):
 
             PO_N = PurchaseOrder.objects.get(po_num=po_number)
             PO_N.date_received = received_date
+
+            if PO_N.date_received != "" and PO_N.amount_loss == 0:
+                PO_N.is_processed = 1
+
             PO_N.save()
 
             reqs = received_date
 
-        # return redirect('.')
 
         po_dets = PurchaseOrder.objects.get(po_num=po_number)
         department = Department.objects.get(id=po_dets.department_id)
         itz = Item.objects.filter(po_id=po_dets.id);
         usr = AuthUser.objects.get(username=request.user.username)
-        # return render(request, 'po_list/po_items.html', context={'usr': usr, 'po_dets': po_dets, 'itz': itz, 'department_name': department.name, 'reqs': reqs})
+        
         return redirect('.')
