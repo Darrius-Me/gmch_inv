@@ -1,7 +1,6 @@
 <head>
   {% load static %}
   <script src="{% static 'po_list/js/style.js' %}"></script>
-  <!-- <script src="{% static 'po_list/js/jquery.js' %}"></script> -->
   <script src="{% static 'po_list/js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
   <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
@@ -17,11 +16,13 @@
     <ul class="navbar-nav mr-auto"></ul>
 
     {% if user.is_authenticated %}
+        <b>Logged in as <u style="color: red">{{ user.username }}</u>|
       {% if user.is_superuser %}
-        <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% else %}
-        <b>Logged in as {{ user.username }} | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% endif %}
+        </b>
     {% else %}
       <b>LOG IN LOGOUT</b>
     {% endif %}
@@ -32,13 +33,9 @@
   <div class="" style="margin: 0 auto; border: solid; border-width: 1px; width: 97%; height: 79%; padding-bottom: 10px; overflow-y: scroll;">
       <div class="container" style="margin-top: 10px;">
         <h1 style="text-align: center; margin-bottom: 20px">PROCESS PO: [{{ po_number }}]</h1>
+        <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
         <div class="form-row">
-          <div class="form-group col-md-12" style="background-color: black">
-            <label for="invoice">&nbsp</label>
-          </div>
-          <div class="form-group col-md-3">
-            <label for="invoice">&nbsp</label>
-          </div>
+          <div class="form-group col-md-3">&nbsp</div>
           <div class="form-group col-md-3">
             <b>Department:</b><br>
             <input type="text" class="form-control" value='{{ department }}' readonly>
@@ -48,33 +45,24 @@
             <input type="text" class="form-control" value='{{ po_dets.charge_to }}' readonly>
           </div>
         </div>
-        <div class="form-group col-md-12" style="background-color: black">
-          <label for="invoice">&nbsp</label>
-        </div>
+        <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
         <div class="form-row">
           <div class="form-group col-md-2">&nbsp</div>
           <div class="form-group col-md-4">
             <b>Purchase Order Number</b><br>
             <input type="text" class="form-control" value='{{ po_dets.po_num }}' readonly>
           </div>
-          <!-- <div class="form-group col-md-2">&nbsp</div> -->
           <div class="form-group col-md-4">
             <b>Supplier</b><br>
             <input type="text" class="form-control" value='{{ po_dets.supplier }}' readonly>
           </div>
-          <div class="form-group col-md-2">
-            &nbsp
-          </div>
-          <div class="form-group col-md-2">
-            &nbsp
-          </div>
+          <div class="form-group col-md-2">&nbsp</div>
+          <div class="form-group col-md-2">&nbsp</div>
           <div class="form-group col-md-8">
             <b>Address</b><br>
             <input type="text" class="form-control" value='{{ po_dets.address }}' readonly>
           </div>
-          <div class="form-group col-md-1">
-            &nbsp
-          </div>
+          <div class="form-group col-md-1">&nbsp</div>
           <div class="form-group col-md-2">&nbsp</div>
           <div class="form-group col-md-2">
             <b>Date</b><br>
@@ -84,20 +72,16 @@
             <b>Mode of Procurement</b><br>
             <input type="text" class="form-control" value='{{ po_dets.mode }}' readonly>
           </div>
-          <!-- <div class="form-group col-md-2">&nbsp</div> -->
           <div class="form-group col-md-2">
             <b>Purchase Request No.</b><br>
             <input type="text" class="form-control" value='{{ po_dets.pr_num }}' readonly>
           </div>
-          <!-- <div class="form-group col-md-1">&nbsp</div> -->
           <div class="form-group col-md-2">
             <b>Tracking Number</b><br>
             <input type="text" class="form-control" value='{{ po_dets.tracking_num }}' readonly>
           </div>
         </div>
-        <div class="form-group col-md-12" style="background-color: black">
-          <label for="invoice">&nbsp</label>
-        </div>
+        <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
         <div class="form-row">
           <div class="form-group col-md-1">&nbsp</div>
           <div class="form-group col-md-5">
@@ -163,293 +147,345 @@
         <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
       </div>
 
-      <div class="container" style="background-color: #d7f3ff; padding: 10px">
-        <div class="col-md-12" style="margin-bottom: 10px">
-          <div class="form-row">
-            <div class="col-md-5">&nbsp</div>
-            <div class="col-md-2">
-              <a class="btn btn-primary" href="#process_po_id" data-toggle="collapse" style="width: 100%">Toggle Items</a>
-            </div>
+      <div class="container" style="margin-top: 10px;">
+        <div class="form-row">
+          <div class="form-group col-md-4">&nbsp</div>
+          <div class="form-group col-md-2">
+            <b>Total Amount</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.total_amount }}' readonly>
+          </div>
+          <div class="form-group col-md-2">
+            <b>Amount Loss</b><br>
+            <input type="text" class="form-control" value='{{ po_dets.amount_loss }}' readonly>
           </div>
         </div>
-        <div id="process_po_id" class="collapse" style="margin: 0 auto; text-align: center; width: 97%;">
-          <div class="row clearfix">
-          	<div class="col-md-12 column">{% csrf_token %}
-              <table class="table table-bordered table-hover" >
-          			<thead>
-          				<tr >
-          					<th class="text-center" style="width: 5%; border: 2px solid blue">
-          						#
-          					</th>
-          					<th class="text-center" style="border: 2px solid blue">
-          						Item
-          					</th>
-          				</tr>
-          			</thead>
-          			<tbody>
-                  {% for it in itz %}
-            				<tr id='addr0'>
-            					<td id='showtable' style="border: 2px solid blue">
-                        <b>{{ forloop.counter }}</b>
-            					</td>
-                      <td style="border: 2px solid blue">
-                        <div class="form-row">
-                          <div class="form-group col-md-1"></div>
-                          <div class="form-group col-md-6">
-                            <b>Description</b><br>
-                            <input type="text" class="form-control" value='{{ it.description }}' readonly style="font-weight: bold">
-                          </div>
-                          <div class="form-group col-md-3">
-                            <b>Brand</b><br>
-                            <input type="text" class="form-control" value='{{ it.brand }}' readonly>
-                          </div>
-                        </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-1"></div>
-                          <div class="form-group col-md-3">
-                            <b>Balance per card</b><br>
-                            <input type="text" class="form-control" value='{{ it.quantity }}' readonly>
-                          </div>
-                          <div class="form-group col-md-3">
-                            <b>On Hand</b><br>
-                            <input type="text" class="form-control" value='{{ it.onhand_qty }}' readonly>
-                          </div>
-                          <div class="form-group col-md-3">
-                            <b>Losses</b><br>
-                            <input type="text" class="form-control" value='{{ it.losses }}' readonly>
-                          </div>
-                        </div>
-                        <div class="form-row">
-                          <div class="form-group col-md-1"></div>
-                          <div class="form-group col-md-2">
-                            <b>Unit</b><br>
-                            <input type="text" class="form-control" value='{{ it.unit }}' readonly>
-                          </div>
-                          <div class="form-group col-md-2">
-                            <b>Unit Cost</b><br>
-                            <input type="text" class="form-control" value='{{ it.unit_cost }}' readonly>
-                          </div>
-                          <div class="form-group col-md-2">
-                            <b>Total Cost</b><br>
-                            <input type="text" class="form-control" value='{{ it.total_cost }}' readonly>
-                          </div>
-                          <div class="form-group col-md-3">
-                            <b>Status</b><br>
-                            {% if it.onhand_qty == 0 %}
-                              <input type="text" class="form-control" value='NOT DELIVERED' readonly style="color: red; font-weight: bold">
-                            {% elif it.quantity > it.onhand_qty %}
-                              <input type="text" class="form-control" value='LACKING' readonly style="color: orange; font-weight: bold">
-                            {% elif it.quantity == it.onhand_qty %}
-                              <input type="text" class="form-control" value='DELIVERED' readonly style="color: green; font-weight: bold">
-                            {% endif %}
-                          </div>
-                        </div>
-            					</td>
-            				</tr>
-                  {% endfor %}
-          			</tbody>
-          		</table>
-          	</div>
-          </div>
-        </div>
+        <div class="form-group col-md-12" style="background-color: black">&nbsp</div>
       </div>
-      <div class="container" style="background-color: #d3fcff">
-        <div class="col-md-12" style="padding-top: 10px">
-          <div class="form-row">
-            <div class="form-group col-md-5">&nbsp</div>
-            <div class="form-group col-md-2">
-              <button class="btn btn-primary" data-toggle="collapse" data-target="#deliveries" style="width: 100%">Toggle Deliveries</button>
+
+      <div class="container">
+        <div class="container" style="background-color: #d7f3ff; padding: 10px">
+          <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="form-row">
+              <div class="col-md-5">&nbsp</div>
+              <div class="col-md-2">
+                <a class="btn btn-primary" href="#process_po_id" data-toggle="collapse" style="width: 100%">Toggle Items</a>
+              </div>
+            </div>
+          </div>
+          <div id="process_po_id" class="collapse" style="margin: 0 auto; text-align: center; width: 97%;">
+            <div class="row clearfix">
+              <div class="col-md-12 column">
+                <table class="table table-bordered table-hover" >
+                  <thead>
+                    <tr >
+                      <th class="text-center" style="width: 5%; border: 2px solid blue">
+                        #
+                      </th>
+                      <th class="text-center" style="border: 2px solid blue">
+                        Item
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for it in itz %}
+                      <tr id='addr0'>
+                        <td id='showtable' style="border: 2px solid blue">
+                          <b>{{ forloop.counter }}</b>
+                        </td>
+                        <td style="border: 2px solid blue">
+                          <div class="form-row">
+                            <div class="form-group col-md-1"></div>
+                            <div class="form-group col-md-6">
+                              <b>Description</b><br>
+                              <input type="text" class="form-control" value='{{ it.description }}' readonly style="font-weight: bold">
+                            </div>
+                            <div class="form-group col-md-3">
+                              <b>Brand</b><br>
+                              <input type="text" class="form-control" value='{{ it.brand }}' readonly>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-1"></div>
+                            <div class="form-group col-md-3">
+                              <b>Balance per card</b><br>
+                              <input type="text" class="form-control" value='{{ it.quantity }}' readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                              <b>On Hand</b><br>
+                              <input type="text" class="form-control" value='{{ it.onhand_qty }}' readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                              <b>Losses</b><br>
+                              <input type="text" class="form-control" value='{{ it.losses }}' readonly>
+                            </div>
+                          </div>
+                          <div class="form-row">
+                            <div class="form-group col-md-1"></div>
+                            <div class="form-group col-md-2">
+                              <b>Unit</b><br>
+                              <input type="text" class="form-control" value='{{ it.unit }}' readonly>
+                            </div>
+                            <div class="form-group col-md-2">
+                              <b>Unit Cost</b><br>
+                              <input type="text" class="form-control" value='{{ it.unit_cost }}' readonly>
+                            </div>
+                            <div class="form-group col-md-2">
+                              <b>Total Cost</b><br>
+                              <input type="text" class="form-control" value='{{ it.total_cost }}' readonly>
+                            </div>
+                            <div class="form-group col-md-3">
+                              <b>Status</b><br>
+                              {% if it.onhand_qty == 0 %}
+                                <input type="text" class="form-control" value='NOT DELIVERED' readonly style="color: red; font-weight: bold">
+                              {% elif it.quantity > it.onhand_qty %}
+                                <input type="text" class="form-control" value='LACKING' readonly style="color: orange; font-weight: bold">
+                              {% elif it.quantity == it.onhand_qty %}
+                                <input type="text" class="form-control" value='DELIVERED' readonly style="color: green; font-weight: bold">
+                              {% endif %}
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
-        <div class="collapse" id="deliveries" style="width: 98%; margin-left: 1%; padding-bottom: 10px">
-          <div class="panel-group" id="delivery_accordion">
-            {% for del in po_del %}
-              <div class="panel panel-default" style="border-top: 1px solid #513bff; border-bottom: 1px solid #513bff">
-                <div class="panel-heading">
-                  <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#delivery_accordion" href="#collapse-{{ del.id }}">{{ del.date }} - #{{ del.invoice }}</a>
-                  </h4>
+        <div class="container" style="background-color: #d3fcff">
+          <div class="col-md-12" style="padding-top: 10px">
+            <div class="form-row">
+              <div class="form-group col-md-5">&nbsp</div>
+              <div class="form-group col-md-2">
+                <button class="btn btn-primary" data-toggle="collapse" data-target="#deliveries" style="width: 100%">Toggle Deliveries</button>
+              </div>
+            </div>
+          </div>
+          <div class="collapse" id="deliveries" style="width: 98%; margin-left: 1%; padding-bottom: 10px">
+            <div class="panel-group" id="delivery_accordion" style="border-top: 1px solid #513bff; ">
+              {% if po_del|length > 0 %}
+                {% for del in po_del %}
+                  <div class="panel panel-default" style="border-bottom: 1px solid #513bff">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#delivery_accordion" href="#collapse-{{ del.id }}">Date: {{ del.date }} - Invoice: #{{ del.invoice }}</a>
+                      </h4>
+                    </div>
+                    <div id="collapse-{{ del.id }}" class="panel-collapse collapse in">
+                      <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                          <tr >
+                            <th class="text-center" style="width: 70%">
+                              Item
+                            </th>
+                            <th class="text-center">
+                              Quantity
+                            </th>
+                            <th class="text-center">
+                              Amount
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for del_it in po_del_it %}
+                          <tr id='addr0'>
+                            {% if del.id == del_it.delivery_id %}
+                              <td id='showtable' style="text-align: left">
+                                <b>{{ del_it.item_desc }}</b>
+                                ({{ del_it.brand }})<br>
+                                {{ del_it.manufacturer }}
+                              </td>
+                              <td id='showtable'>
+                                <b>{{ del_it.quantity }}</b>
+                              </td>
+                              <td id='showtable'>
+                                <b>{{ del_it.amount }}</b>
+                              </td>
+                            {% endif %}
+                          </tr>
+                          {% endfor %}
+                          <tr>
+                            <td id='showtable' style="text-align: right" colspan="2">
+                              <b>TOTAL</b>
+                            </td>
+                            <td id='showtable' style="text-align: right">
+                              <b>{{ del.current_total_amount }}</b>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% else %}
+                <div class="panel panel-default" style="border-bottom: 1px solid #513bff">
+                  <div class="panel-heading">
+                    <h4 class="panel-title">
+                      NO DELIVERIES
+                    </h4>
+                  </div>
                 </div>
-                <div id="collapse-{{ del.id }}" class="panel-collapse collapse in">
-                  <table class="table table-bordered table-striped table-hover">
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="container" style="padding: 10px; background-color: #fffb93">
+          <div class="col-md-12" style="margin-bottom: 10px">
+            <div class="form-row">
+              <div class="col-md-5">&nbsp</div>
+              <div class="col-md-2">
+                <a class="btn btn-warning" id="adddelivery_toggle" href="#delivery" data-toggle="collapse" style="width: 100%">Add Delivery</a>
+              </div>
+            </div>
+          </div>
+          <div id="delivery" class="collapse" style="margin: 0 auto; text-align: center; width: 97%;">
+            <div class="row clearfix">
+              <div class="col-md-12 column">
+                <div class="container" style="text-align: left;">
+                  <div class="form-row">
+                    <div class="form-group col-md-1"></div>
+                    <div class="form-group col-md-7">
+                      <b>Product</b><br>
+                      <input type="hidden" class="form-control" name="it{{ forloop.counter }}-0" value='{{ it.id }}'>
+                      <select class="form-control" id="adddelivery_description" style="font-weight: bold">
+                        {% for i in itz %}
+                          <option value="{{ i.description }}-{{ i.id }}-{{ i.unit_cost }}" style="font-weight: bold">{{ i.description }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <b>Quantity</b><br>
+                      <input type="text" class="form-control" id="adddelivery_quantity">
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-1"></div>
+                    <div class="form-group col-md-10">
+                      <b>Manufacturer</b><br>
+                      <input type="text" class="form-control" id="adddelivery_manufacturer"'>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-1"></div>
+                    <div class="form-group col-md-4">
+                      <b>Brand</b><br>
+                      <input type="text" class="form-control" id="adddelivery_brand"'>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <b>Lot Number</b><br>
+                      <input type="text" class="form-control" id="adddelivery_lotno"'>
+                    </div>
+                    <div class="form-group col-md-3">
+                      <b>Expiration Date</b><br>
+                      <input type="date" class="form-control" id="adddelivery_expiration"'>
+                    </div>
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-1"></div>
+                    <div class="form-group col-md-10">
+                      <b>Remarks</b><br>
+                      <input type="text" class="form-control" id="adddelivery_remarks"'>
+                    </div>
+                  </div>
+                </div>
+                <a class="btn btn-secondary pull-left" onclick="validate_delivery('item-delivery')" style="margin-bottom: 50px; width:130px">Add Item</a>
+              </div>
+            </div>
+            <div class="container" style="margin-top: 10px; border: 1px solid gray; padding: 10px">
+              <form action="./processing_po" method="post" autocomplete="off" id="process_po_form">
+                {% csrf_token %}
+                <div style="text-align: left">
+                  <div class="form-row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-3 has-error has-feedback" id="delivery_date_div">
+                      <b id="delivery_date_label">Delivery Date</b><br>
+                      <input type="date" class="form-control" name="delivery_date" id="delivery_date">
+                    </div>
+                    <div class="col-md-3">
+                      <b>Invoice</b><br>
+                      <input type="text" class="form-control" name="delivery_invoice" id="delivery_invoice" placeholder="#">
+                      <input type="hidden" name="po_number_del" value="{{ po_number }}"
+                    </div>
+                  </div>
+                </div>
+                <div class="">
+                  &nbsp
+                </div>
+                <div style="background-color: #fff957">
+                  <table class="table table-bordered table-hover" syle="margin-top: 10px">
                     <thead>
                       <tr >
                         <th class="text-center" style="width: 5%">
                           #
                         </th>
-                        <th class="text-center" style="width: 70%">
+                        <th class="text-center">
                           Item
-                        </th>
-                        <th class="text-center">
-                          Quantity
-                        </th>
-                        <th class="text-center">
-                          Amount
                         </th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {% for del_it in po_del_it %}
-                      <tr id='addr0'>
-                        {% if del.id == del_it.delivery_id %}
-                          <td id='showtable'>
-                            <b>{{ forloop.counter }}</b>
-                          </td>
-                          <td id='showtable' style="text-align: left">
-                            <b>{{ del_it.item_desc }}</b>
-                            ({{ del_it.brand }})<br>
-                            {{ del_it.manufacturer }}
-                          </td>
-                          <td id='showtable'>
-                            <b>{{ del_it.quantity }}</b>
-                          </td>
-                          <td id='showtable'>
-                            <b>{{ del_it.amount }}</b>
-                          </td>
-                        {% endif %}
-                      </tr>
-                      {% endfor %}
+                    <tbody id="delivery_table">
                     </tbody>
                   </table>
                 </div>
-              </div>
-            {% endfor %}
+                <div class="form-row">
+                  <div class="col-md-5">&nbsp</div>
+                  <div class="col-md-2" style="margin-top: 20px">
+                    <a class="pull-right btn btn-danger" onclick="deleteitem_process()" style="width:100%; color: white">Delete Item</a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="" style="margin: 0 auto; padding-top: 10px; text-align: center">
+            <button type="button" class="btn btn-primary" onclick="validate_delivery('date-invoice')">SUBMIT</button>
           </div>
         </div>
       </div>
-      <div class="container" style="padding: 10px; background-color: #fffb93">
-        <div class="col-md-12" style="margin-bottom: 10px">
-          <div class="form-row">
-            <div class="col-md-5">&nbsp</div>
-            <div class="col-md-2">
-              <a class="btn btn-warning" href="#delivery" data-toggle="collapse" style="width: 100%">Add Delivery</a>
-            </div>
-          </div>
-        </div>
-        <div id="delivery" class="collapse" style="margin: 0 auto; text-align: center; width: 97%;">
-          <div class="row clearfix">
-            <div class="col-md-12 column">
-              <div class="container" style="text-align: left;">
-                <div class="form-row">
-                  <div class="form-group col-md-1"></div>
-                  <div class="form-group col-md-7">
-                    <b>Product</b><br>
-                    <input type="hidden" class="form-control" name="it{{ forloop.counter }}-0" value='{{ it.id }}'>
-                    <select class="form-control" id="adddelivery_description" style="font-weight: bold">
-                      {% for i in itz %}
-                        <option value="{{ i.description }}-{{ i.id }}-{{ i.unit_cost }}" style="font-weight: bold">{{ i.description }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <b>Quantity</b><br>
-                    <input type="text" class="form-control" id="adddelivery_quantity">
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-1"></div>
-                  <div class="form-group col-md-10">
-                    <b>Manufacturer</b><br>
-                    <input type="text" class="form-control" id="adddelivery_manufacturer"'>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-1"></div>
-                  <div class="form-group col-md-4">
-                    <b>Brand</b><br>
-                    <input type="text" class="form-control" id="adddelivery_brand"'>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <b>Lot Number</b><br>
-                    <input type="text" class="form-control" id="adddelivery_lotno"'>
-                  </div>
-                  <div class="form-group col-md-3">
-                    <b>Expiration Date</b><br>
-                    <input type="date" class="form-control" id="adddelivery_expiration"'>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-group col-md-1"></div>
-                  <div class="form-group col-md-10">
-                    <b>Remarks</b><br>
-                    <input type="text" class="form-control" id="adddelivery_remarks"'>
-                  </div>
-                </div>
-              </div>
-              <a class="btn btn-secondary pull-left" onclick="additem_process()" style="margin-bottom: 50px; width:130px">Add Item</a>
-            </div>
-          </div>
-          <div class="container" style="margin-top: 10px; border: 1px solid gray; padding: 10px">
-            <form action="./processing_po" method="post" autocomplete="off" id="process_po_form">
-              {% csrf_token %}
-              <div style="text-align: left">
-                <div class="form-row">
-                  <div class="col-md-3"></div>
-                  <div class="col-md-3">
-                    <b>Delivery Date</b><br>
-                    <input type="date" class="form-control" name="delivery_date">
-                  </div>
-                  <div class="col-md-3">
-                    <b>Invoice</b><br>
-                    <input type="text" class="form-control" name="delivery_invoice" placeholder="#">
-                    <input type="hidden" name="po_number_del" value="{{ po_number }}"
-                  </div>
-                </div>
-              </div>
-              <div class="">
-                &nbsp
-              </div>
-              <div style="background-color: #fff957">
-                <table class="table table-bordered table-hover" syle="margin-top: 10px">
-                  <thead>
-                    <tr >
-                      <th class="text-center" style="width: 5%">
-                        #
-                      </th>
-                      <th class="text-center">
-                        Item
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody id="delivery_table">
-                  </tbody>
-                </table>
-              </div>
-              <div class="form-row">
-                <div class="col-md-5">&nbsp</div>
-                <div class="col-md-2" style="margin-top: 20px">
-                  <a class="pull-right btn btn-danger" onclick="deleteitem_process()" style="width:100%; color: white">Delete Item</a>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
       </div>
-    </div>
-    <div class="" style="margin: 0 auto; padding-top: 10px; text-align: center">
-      <button type="button" class="btn btn-primary" onclick="validate_add()" data-toggle="modal" data-target="#exampleModal">SUBMIT</button>
-    </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+
+    <div class="modal fade" id="proceed_delivery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <div class="col-md-12" style="text-align: center; color: red">
+            <div class="col-md-12" style="text-align: center; color: green">
               <h4 class="modal-title" id="exampleModalLabel"><b>WARNING!</b></h4>
             </div>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
-            </button>
+            </button> -->
           </div>
           <div class="modal-body" style="text-align: center">
             <b>This process cannot be undone. <br>Please double check your entry. <br>Continue?</b>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-danger" form="process_po_form">Save changes</button>
+            <button type="submit" class="btn btn-success" form="process_po_form">Save changes</button>
           </div>
         </div>
       </div>
     </div>
+    <div class="modal fade" id="error_delivery" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="col-md-12" style="text-align: center; color: red">
+              <h4 class="modal-title" id="exampleModalLabel"><b>ERROR!</b></h4>
+            </div>
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button> -->
+          </div>
+          <div class="modal-body" style="text-align: center">
+            <p id="error_delivery_label"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>

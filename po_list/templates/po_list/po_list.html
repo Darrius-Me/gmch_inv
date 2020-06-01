@@ -1,6 +1,6 @@
 <head>
   {% load static %}
-  <script src="{% static 'po_list/js/jquery.js' %}"></script>
+  <script src="{% static 'po_list/js/style.js' %}"></script>
   <script src="{% static 'po_list/js/jquery-1.11.0.min.js' %}"></script>
   <script src="{% static 'po_list/js/bootstrap.js' %}"></script>
   <link rel="stylesheet" href="{% static 'po_list/css/bootstrap.css' %}">
@@ -40,18 +40,20 @@
     </ul>
 
     {% if user.is_authenticated %}
+        <b>Logged in as <u style="color: red">{{ user.username }}</u>|
       {% if user.is_superuser %}
-        <b>Logged in as {{ user.username }} | <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="/admin">SUPERADMIN</a> | <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% else %}
-        <b>Logged in as {{ user.username }} | <a href="{% url 'logoutuser' %}">LOGOUT</a></b>
+         <a href="{% url 'logoutuser' %}">LOGOUT</a>
       {% endif %}
+        </b>
     {% else %}
       <b>LOG IN LOGOUT</b>
     {% endif %}
   </div>
 </nav>
 
-<div class="container" style="padding-top: 1%; padding-bottom: 1%; text-transform: uppercase">
+<div class="container" style="padding-top: 1%; padding-bottom: 1%;">
   <h3 style="text-align: center" id="tableplaceholder">
     <u style="color: #019519">{{ pro }}</u>
     from
@@ -85,7 +87,7 @@
         <th scope="col">Status</th>
       </tr>
     </thead>
-  <tbody>
+    <tbody>
 
       {% for po in pos %}
         <tr>

@@ -94,7 +94,7 @@ class DeliveryItem(models.Model):
     manufacturer = models.CharField(max_length=255)
     lot_number = models.CharField(max_length=255)
     expiration_date = models.CharField(max_length=255)
-    amount = models.IntegerField()
+    amount = models.FloatField()
     delivery_id = models.IntegerField()
 
     class Meta:
@@ -195,7 +195,7 @@ class PurchaseOrder(models.Model):
     total_amount = models.FloatField()
     is_processed = models.IntegerField()
     date_received = models.CharField(max_length=255)
-    amount_loss = models.IntegerField()
+    amount_loss = models.FloatField()
 
     class Meta:
         managed = False

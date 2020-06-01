@@ -9,111 +9,194 @@
 // });
 
 
-function checkdate()
+function validate_delivery(key)
 {
-  var date = document.getElementById("indate");
-  var datetxt = date.value.trim().toLowerCase();
-
-  if(!datetxt.includes("/"))
+  if(key == "date-invoice")
   {
-    error_fomat("Date");
-    return;
-  }
-
-  var dates = datetxt.split("/");
-
-  if(dates.length!=3)
-  {
-    error_fomat("Date");
-    return;
-  }
-
-  if((dates[0] < 0) || (dates[0] > 12))
-  {
-    error_fomat("Date");
-    return;
-  }
-
-  if(dates[2].length!=4)
-  {
-    error_fomat("Date");
-    return;
-  }
-
-  if(dates[0]==1 || dates[0]==3 || dates[0]==5 || dates[0]==7 || dates[0]==8 || dates[0]==10  || dates[0]==12)
-  {
-    if(dates[1] < 0 || dates[1] > 31)
+    var date = document.getElementById("delivery_date");
+    var invoice = document.getElementById("delivery_invoice");
+    if(date.value == null || date.value == "" || invoice.value == null || invoice.value == "")
     {
-      error_fomat("Date");
-      return;
+      // alert(document.getElementById("delivery_table").rows.length);
+      document.getElementById("adddelivery_remarks").scrollIntoView();
+      document.getElementById("error_delivery_label").innerHTML = "<p><b>Invalid DELIVERY DATE or INVOICE.<br>Please enter the correct details.</b></p>";
+      $("#error_delivery").modal();
     }
-  }
-  else if(dates[0]==4 || dates[0]==6 || dates[0]==9 || dates[0]==11)
-  {
-    if(dates[1] < 0 || dates[1] > 30)
+    else if(document.getElementById("delivery_table").rows.length == 0)
     {
-      error_fomat("Date");
-      return;
-    }
-  }
-  else if(dates[0]==2)
-  {
-    if(checkleap(dates[2]))
-    {
-      if(dates[1] < 0 || dates[1] > 29)
-      {
-        error_fomat("Date");
-        return;
-      }
+      document.getElementById("error_delivery_label").innerHTML = "<p><b>No item was added in the delivery.<br>Please enter the correct details.</b></p>";
+      $("#error_delivery").modal();
     }
     else
     {
-      if(dates[1] < 0 || dates[1] > 28)
-      {
-        error_fomat("Date");
-        return;
-      }
+      $("#proceed_delivery").modal();
     }
   }
+  else if(key == "item-delivery")
+  {
+    var desc = document.getElementById("adddelivery_description");
+    var desc_temp = desc.options[desc.selectedIndex].value.split("-");
+    var description = desc_temp[0];
+    var quantity = document.getElementById("adddelivery_quantity").value;
+    var manufacturer = document.getElementById("adddelivery_manufacturer").value;
+    var brand = document.getElementById("adddelivery_brand").value;
+    var lotno = document.getElementById("adddelivery_lotno").value;
+    var expiration_date = document.getElementById("adddelivery_expiration").value;
+    var remarks = document.getElementById("adddelivery_remarks").value;
 
+    if(description == "" || description == null || quantity == "" || quantity == null || manufacturer == "" || manufacturer == null || brand == "" || brand == null || lotno == "" || lotno == null || expiration_date == "" || expiration_date == null)
+    {
+      document.getElementById("adddelivery_toggle").scrollIntoView();
+      document.getElementById("error_delivery_label").innerHTML = "<p><b>All entries should be filled except REMARKS.<br>Please enter the correct details.</b></p>";
+      $("#error_delivery").modal();
+    }
+    else if(isNaN(quantity))
+    {
+      document.getElementById("adddelivery_toggle").scrollIntoView();
+      document.getElementById("error_delivery_label").innerHTML = "<p><b>Invalid quantity.<br>Please enter the correct details.</b></p>";
+      $("#error_delivery").modal();
+    }
+    else
+    {
+      additem_process();
+    }
+  }
 }
 
-function checkleap(year)
+function verifyadd()
 {
-  if (year % 4 != 0)
-    return false;
-  else if (year % 400 == 0)
-    return true;
-  else if (year % 100 == 0)
-    return false;
+  var table = document.getElementById("addtable_main");
+  var table_length = table.rows.length-1;
+
+  var unit = document.getElementById("it" + table_length + "3").value;
+  var quantity = document.getElementById("it" + table_length + "4").value;
+  var unit_cost = document.getElementById("it" + table_length + "5").value;
+  var description = document.getElementById("it" + table_length + "1").value;
+  var brand = document.getElementById("it" + table_length + "2").value;
+
+  if(unit == "" || unit == null)
+    return "Unit!";
+  else if(quantity == "" || quantity == null || isNaN(quantity))
+    return "Quantity!";
+  else if(unit_cost == "" || unit_cost == null || isNaN(unit_cost))
+    return "Unit Cost!";
+  else if(description == "" || description == null)
+    return "Description!";
+  else if(brand == "" || brand == null)
+    return "Brand!";
   else
-    return true;
-}
-
-function error_fomat(field)
-{
-  // alert("Error " + field + " Format!");
-}
-
-function validate_add()
-{
-  checkdate();
+    return "NO ERROR";
 }
 
 function addrow()
 {
-  var table = document.getElementById("addtable");
-  var row = table.insertRow(table.rows.length);
-  var cell1 = row.insertCell(0);
-  var cell2 = row.insertCell(1);
+  var verified = verifyadd();
+  if(verified == "NO ERROR")
+  {
+    var table = document.getElementById("addtable_main");
+    var row = table.insertRow(table.rows.length);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
 
-  cell1.innerHTML = "<td id='addtable'><b>" + (table.rows.length -1) + "</b></td>";
-  cell2.innerHTML = "<td><div class='form-row'><div class='form-group col-md-1'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "3'>Unit</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "3' placeholder='#'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "4'>Quantity</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "4' placeholder='#'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "5'>Unit Cost</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "5' placeholder='#'></div></div><div class='form-row'><div class='form-group col-md-1'></div><div class='form-group col-md-6'><label for='it" + (table.rows.length - 1) + "1'>Description</label><input type='text' class='form-control' name='it" + (table.rows.length - 1) + "1' placeholder='#'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "2'>Brand</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "2' placeholder='#'></div></div></td>";
+    cell1.innerHTML = "<td ><b>" + (table.rows.length -1) + "</b></td>";
+    cell2.innerHTML = "<td><div class='form-row'><div class='form-group col-md-1'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "3'>Unit</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "3' id='it" + (table.rows.length -1) + "3' placeholder='#'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "4'>Quantity</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "4' id='it" + (table.rows.length -1) + "4' placeholder='#'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "5'>Unit Cost</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "5' id='it" + (table.rows.length -1) + "5' placeholder='#'></div></div><div class='form-row'><div class='form-group col-md-1'></div><div class='form-group col-md-6'><label for='it" + (table.rows.length - 1) + "1'>Description</label><input type='text' class='form-control' name='it" + (table.rows.length - 1) + "1' id='it" + (table.rows.length - 1) + "1' placeholder='#'></div><div class='form-group col-md-3'><label for='it" + (table.rows.length -1) + "2'>Brand</label><input type='text' class='form-control' name='it" + (table.rows.length -1) + "2' id='it" + (table.rows.length -1) + "2' placeholder='#'></div></div></td>";
+  }
+  else
+  {
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error " + verified + " All entries should be filled with correct details.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+}
+
+function submit_add()
+{
+  var inpo = document.getElementById("inpo").value;
+  var insup = document.getElementById("insup").value;
+  var inadd = document.getElementById("inadd").value;
+  var indate = document.getElementById("indate").value;
+  var inmode = document.getElementById("inmode").value;
+  var inpr = document.getElementById("inpr").value;
+  var intr = document.getElementById("intr").value;
+  var delplace = document.getElementById("delplace").value;
+  var delterm = document.getElementById("delterm").value;
+  var deldate = document.getElementById("deldate").value;
+  var payterm = document.getElementById("payterm").value;
+
+  if(inpo == "" || inpo == null)
+  {
+    document.getElementById("addfirsthalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error PO Number! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(insup == "" || insup == null)
+  {
+    document.getElementById("addfirsthalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error Supplier! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(inadd == "" || inadd == null)
+  {
+    document.getElementById("addfirsthalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error Address! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(indate == "" || indate == null)
+  {
+    document.getElementById("addfirsthalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error Date! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(inmode == "" || inmode == null)
+  {
+    document.getElementById("addfirsthalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error Mode of Procurement! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(inpr == "" || inpr == null)
+  {
+    document.getElementById("addfirsthalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error PR Number All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(intr == "" || intr == null)
+  {
+    document.getElementById("addfirsthalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error Tracking Number! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(delplace == "" || delplace == null)
+  {
+    document.getElementById("addsecondhalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error Delivery Place! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(delterm == "" || delterm == null)
+  {
+    document.getElementById("addsecondhalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error Delivery Term! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(deldate == "" || deldate == null)
+  {
+    document.getElementById("addsecondhalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error Delivery Date! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else if(payterm == "" || payterm == null)
+  {
+    document.getElementById("addsecondhalf").scrollIntoView();
+    document.getElementById("error_add_label").innerHTML = "<p><b>Error Payment Term! All entries should be filled.<br>Please enter the correct details.</b></p>";
+    $("#error_add").modal();
+  }
+  else
+  {
+    $("#proceed_add").modal();
+  }
 }
 
 function deleterow()
 {
-  var table = document.getElementById("addtable");
+  var table = document.getElementById("addtable_main");
   if(table.rows.length > 2)
   {
     table.deleteRow(table.rows.length-1);
@@ -177,16 +260,6 @@ function deleteitem_process(clicked_id)
     table.deleteRow(table.rows.length-1);
   }
 }
-
-$('table').find('tr').each(function()
-{
-  var trResult= '';
-  $(this).find('td').each(function()
-  {
-    if(trResult.indexOf($(this).val()) ===-1)
-    trResult += $(this).val() +';';
-  });
-});
 
 function clicks()
 {

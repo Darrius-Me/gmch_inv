@@ -13,7 +13,7 @@ def items(request):
     if not request.user.is_authenticated:
         return render(request, 'home/home.html')
     else:
-        items = Item.objects.all();
+        items = Item.objects.all().order_by("description");
         pos = PurchaseOrder.objects.all()
         usr = AuthUser.objects.get(username=request.user.username)
         return render(request, 'item_list/items.html', context={'items':items, 'pos': pos, 'usr': usr})
